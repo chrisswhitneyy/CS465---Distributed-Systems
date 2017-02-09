@@ -1,0 +1,13 @@
+## Notes for Peer-to-Peer Chat Application
+
+Authors: John Bassler, Jack Jenkins, and Chris Whitney
+Last Modified: February 9th, 2017
+
+# Introduction
+A peer-to-peer chat application is a program that allows for the users to exchange messages without the need of a centralized entities (i.e server). This is a decentralized model which requires more thought to be placed into the operations which would have been trivial with a centralized model. This requires the use of a set of different message types which we will all be interpreted differently by the nodes (users).
+
+The application has the following requirements and assumptions. This application will allow user to add themselves to the chat, remove themselves, and send a message. This message will be seen by all members in the chat. For this application, we make the following assumptions, 1.) every node has a unique IP, 2.) nodes can use any port, 3.) participants may join or leave the chat at anytime and joining can be accomplished by knowing any node.
+
+To accomplish the requirements the application will maintain a spatial and logical structure. The team has decided to use a doubly-linked list as this structure because it makes the most intuitive sense to us. The first node to join will create the chat will be the head of the list and each preceding node to join will be added to the end. When a node wishes to leave the chat a repair addiction will be taken to heal the connections which that leaving node has. This is the standard delete action with a linked list, however now the links will be network connections.
+
+# Classes
