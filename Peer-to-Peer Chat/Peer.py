@@ -10,39 +10,39 @@ class Peer(object):
     # Getters and setters
     def get_peer_id():
         return _peer_id
-    def set_peer_id(in):
-        self._peer_id = in
+    def set_peer_id(arg):
+        self._peer_id = arg
     def get_next_peer():
         return _next_peer
-    def set_next_peer(in):
-        self._next_peer = in
+    def set_next_peer(arg):
+        self._next_peer = arg
     def get_pev_peer():
         return _pev_peer
-    def set_pev_peer(in):
-        self._pev_peer = in
+    def set_pev_peer(arg):
+        self._pev_peer = arg
     def get_user_name():
         return _user_name
-    def set_user_name(in):
-        self._user_name = in
+    def set_user_name(arg):
+        self._user_name = arg
     def get_peer_ip():
         return _peer_ip
-    def set_peer_ip(in):
-        self._peer_ip = in
+    def set_peer_ip(arg):
+        self._peer_ip = arg
+
 
     def join (ip):
-
+        return 0
     def exit():
-
+        return 0
     def initialize():
-
+        return 0
     def listen():
-
+        return 0
     def disp_message(data):
-
+        return 0
     def broadcast(data):
-            
+        return 0
 
 
-    def __init__(self, arg):
+    def __init__(self):
         super(Peer, self).__init__()
-        self.arg = arg

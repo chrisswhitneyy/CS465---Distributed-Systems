@@ -12,27 +12,26 @@ class Message(object):
     def get_type_id ():
         return self._type_id
 
-    def set_type_id (in):
-        self._type_id = in
+    def set_type_id (arg):
+        self._type_id = arg
 
     def get_from_id ():
         return self._from_id
 
-    def set_from_id (in):
-        self._from_id = in
+    def set_from_id (arg):
+        self._from_id = arg
 
     def get_from_user_id ():
         return self._from_user_id
 
-    def set_from_user_id (in):
-        self._from_user_id = in
+    def set_from_user_id (arg):
+        self._from_user_id = arg
 
     def get_data ():
         return self._data
 
-    def set_data (in):
-        self._data = in
+    def set_data (arg):
+        self._data = arg
 
-    def __init__(self, arg):
+    def __init__(self):
         super(Message, self).__init__()
-        self.arg = arg
