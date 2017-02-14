@@ -22,7 +22,7 @@ public class Node {
       this._serve_socket = new ServerSocket(this._port);
     }
     catch (IOException error){
-      System.out.println( "Server socket was unable to be created. Error: "+ error);
+      System.out.println( "Unable to create server socket. Error: "+ error);
     }
 
     System.out.println( "Peer node " + this._node_id + " is running...");
