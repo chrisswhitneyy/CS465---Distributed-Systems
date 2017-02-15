@@ -17,7 +17,7 @@ public class Node {
     this._sockets = new ArrayList<Socket>(3);
   }
    public static void main (String[] args){
-     Node node = new Node(1);
+     Node node = new Node();
      node.start();
    }
 
