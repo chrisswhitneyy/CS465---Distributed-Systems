@@ -16,6 +16,10 @@ public class Node {
     this._num_connected_nodes = 0;
     this._sockets = new ArrayList<Socket>(3);
   }
+   public static void main (String[] args){
+     Node node = new Node(1);
+     node.start();
+   }
 
   public void start(){
     try{
