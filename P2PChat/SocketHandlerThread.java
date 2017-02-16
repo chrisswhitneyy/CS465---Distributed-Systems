@@ -21,18 +21,26 @@ public class SocketHandlerThread extends Node implements Runnable{
     try{
 
       this.clientReader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-      this.clientWriter = new DataOutputStream(this.client.getOutputStream());
 
       String message = null;
 
       while ((message = clientReader.readLine()) != null) {
-
           System.out.println("Connection "+ _num_connected_nodes + " said: " + message);
-
-          clientWriter.writeBytes(message);
-
+          writeToSockets(message);
       }
 
+
+    }catch (IOException e){
+
+    }
+  }
+  public synchronized void writeToSockets(String message){
+    try{
+
+      for (int i = 0; i<super._sockets.size(); i++){
+        this.clientWriter = new DataOutputStream(super._sockets.get(i).getOutputStream());
+        clientWriter.writeBytes(message);
+      }
 
     }catch (IOException e){
 

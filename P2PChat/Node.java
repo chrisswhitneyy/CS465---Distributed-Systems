@@ -19,6 +19,9 @@ public class Node {
     this._sockets = new ArrayList<Socket>(this.max_num_con);
   }
    public static void main (String[] args){
+
+     System.out.println("Peer-to-Peer Chat Application");
+     
      Node node = new Node();
      node.startServer();
    }
