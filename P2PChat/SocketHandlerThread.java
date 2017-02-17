@@ -8,42 +8,26 @@ public class SocketHandlerThread extends Node implements Runnable{
   // the clients message and an output stream to send a message to the client
   Socket client;
   BufferedReader clientReader;
-  DataOutputStream clientWriter;
+  Node nodeObject;
 
-  public SocketHandlerThread(Socket client) {
-    super._sockets.add(client);
+  public SocketHandlerThread(Socket client, Node nodeObject) {
     this.client = client;
+    this.nodeObject = nodeObject;
+    System.out.println("Connection accpeted " + client);
   }
 
   //@override
   public void run(){
 
     try{
-
       this.clientReader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-
       String message = null;
-
       while ((message = clientReader.readLine()) != null) {
-          System.out.println("Connection "+ _num_connected_nodes + " said: " + message);
-          writeToSockets(message);
+          super.writeMessageToSockets(message,nodeObject);
       }
 
+    }catch (IOException e){ }
 
-    }catch (IOException e){
-
-    }
   }
-  public synchronized void writeToSockets(String message){
-    try{
 
-      for (int i = 0; i<super._sockets.size(); i++){
-        this.clientWriter = new DataOutputStream(super._sockets.get(i).getOutputStream());
-        clientWriter.writeBytes(message);
-      }
-
-    }catch (IOException e){
-
-    }
-  }
 }

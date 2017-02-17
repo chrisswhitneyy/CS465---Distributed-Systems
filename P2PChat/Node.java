@@ -4,33 +4,47 @@ import java.util.*;
 import java.lang.Thread;
 
 public class Node {
-  ServerSocket _server_socket;
-  List<Socket> _sockets;
+  ServerSocket server_socket;
+  List<Socket> sockets;
 
-  int max_num_con = 4;
   int _node_id;
   int _port = 2594;
-  int _num_connected_nodes;
 
   // Node constructor
   public Node(){
-    //this._node_id = id;
-    this._num_connected_nodes = 0;
-    this._sockets = new ArrayList<Socket>(this.max_num_con);
+    this._node_id = 1;
+    this.sockets = new ArrayList<Socket>();
   }
    public static void main (String[] args){
+     System.out.println("======Peer-to-Peer Chat Application======");
 
-     System.out.println("Peer-to-Peer Chat Application");
-     
      Node node = new Node();
+
+     (new Thread(new TermalHandlerThread(node))).start();
+
      node.startServer();
    }
 
+  public void writeMessageToSockets(String message, Node node){
+    try{
+
+      for (int i = 0; i < node.sockets.size(); i++){
+
+        Socket socket =  node.sockets.get(i);
+        DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
+        clientWriter.writeBytes(message);
+
+        System.out.println("Message "+ message + " to " + socket);
+      }
+    }catch (IOException e){}
+
+  }
+
+
   public void startServer(){
     try{
-      this._server_socket = new ServerSocket(this._port);
-    }
-    catch (IOException error){
+      this.server_socket = new ServerSocket(this._port);
+    }catch (IOException error){
       System.out.println( "Unable to create server socket. Error: "+ error);
     }
 
@@ -39,17 +53,15 @@ public class Node {
     // server loop: infinitely loops and accepting clients
     while (true) {
       try{
-        // nesting of instantiation makes it impossible for race conditions
-        (new Thread(new SocketHandlerThread( _server_socket.accept() ))).start();
-        _num_connected_nodes++;
+
+        Socket socket = server_socket.accept();
+        this.sockets.add(socket);
+        (new Thread(new SocketHandlerThread(socket, this))).start();
+
       }
       catch (IOException error){
         System.out.println( "Unable to accept connection. Error: "+ error);
       }
-
     }
-
   }
-
-
 }
