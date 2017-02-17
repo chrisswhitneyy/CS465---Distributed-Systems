@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -9,11 +8,13 @@ public class SocketHandlerThread extends Node implements Runnable{
   Socket client;
   BufferedReader clientReader;
   Node nodeObject;
+  String ip;
 
   public SocketHandlerThread(Socket client, Node nodeObject) {
     this.client = client;
     this.nodeObject = nodeObject;
-    System.out.println("Connection accpeted " + client);
+    ip = client.getLocalAddress().getHostAddress();
+    System.out.println("\nConnection accpeted " + ip);
   }
 
   //@override
@@ -22,8 +23,9 @@ public class SocketHandlerThread extends Node implements Runnable{
     try{
       this.clientReader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
       String message = null;
+      String ip = this.client.getLocalAddress().getHostAddress();
       while ((message = clientReader.readLine()) != null) {
-          super.writeMessageToSockets(message,nodeObject);
+          super.writeMessageToSockets(ip,message,nodeObject);
       }
 
     }catch (IOException e){ }
