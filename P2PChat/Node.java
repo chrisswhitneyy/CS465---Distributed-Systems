@@ -46,7 +46,7 @@ public class Node {
          System.out.print( "Enter hostname or ip: " );
          // Read a line of text from the user.
          String hostName = scanner.nextLine();
-         
+
          try {
               // creates a socket instance
               Socket socket = new Socket(hostName, node._port);
