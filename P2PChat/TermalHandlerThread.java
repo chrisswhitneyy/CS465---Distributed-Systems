@@ -18,7 +18,7 @@ public class TermalHandlerThread extends Node implements Runnable{
       System.out.print( "Enter message: " );
       // Read a line of text from the user.
       String input = scanner.nextLine();
-      super.writeMessageToSockets("local",input,nodeObject);
+      super.writeMessageToSockets(nodeObject.user_name,input,nodeObject);
     }
 
   }
