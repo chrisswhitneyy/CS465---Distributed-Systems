@@ -8,11 +8,13 @@ public class Node {
   ServerSocket server_socket;
   List<String> ips;
   String user_name;
+  String ip;
   int port = 2594;
 
   // Node constructor
   public Node(){
     this.ips = new ArrayList<String>();
+    this.ip = InetAddress.getLocalHost().getHostAddress();
   }
 
    public static void main (String[] args){
@@ -65,10 +67,16 @@ public class Node {
    }
 
    public synchronized void writeMessageToSockets(String from, String message, Node node){
+
      System.out.println("writeMessageToSockets ips size: " + node.ips.size());
+
      for (int i = 0; i < node.ips.size(); i++){
+       String ip =  node.ips.get(i);
+
+       if ( ip == node.ip  ){
+         continue;
+       }
        try{
-         String ip =  node.ips.get(i);
          Socket socket = new Socket(ip , node.port);
          DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
          clientWriter.writeBytes(message);
