@@ -65,20 +65,16 @@ public class Node {
    }
 
   public synchronized void writeMessageToSockets(String from, String message, Node node){
-    try{
-
-      for (int i = 0; i < node.ips.size(); i++){
-
+    for (int i = 0; i < node.ips.size(); i++){
+      try{
         String ip =  node.ips.get(i);
         Socket socket = new Socket(ip , node.port);
         DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
         clientWriter.writeBytes(message);
-        clientWriter.close();
         System.out.println(node.user_name + ":" + message + "\n");
-
+      }catch (IOException e){
+        System.out.println("IOException was thrown." + e);
       }
-    }catch (IOException e){
-      System.out.println("IOException was thrown." + e);
     }
     return;
 
