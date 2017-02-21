@@ -13,11 +13,13 @@ public class TermalHandlerThread extends Node implements Runnable{
 
     Scanner scanner = new Scanner( System.in );
     // Read a line of text from the user.
-    while ( scanner.hasNext() ){
+    while (true){
       message = scanner.nextLine();
       // Prompt the user
       System.out.print( "Enter message: " );
-      super.writeMessageToSockets(node.user_name,message,node);
+      if (scanner.hasNext()){
+        super.writeMessageToSockets(node.user_name,message,node);
+      }
     }
 
   }
