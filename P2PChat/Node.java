@@ -109,7 +109,10 @@ public class Node {
        try{
          Socket socket = server_socket.accept();
          String ip = socket.getLocalAddress().getHostAddress();
-         node.ips.add(ip);
+
+         if (!node.ips.contains(ip)){
+            node.ips.add(ip);
+         }
          (new Thread(new SocketHandlerThread(socket, node))).start();
        }catch (IOException error){
          System.out.println( "Unable to accept connection. Error: "+ error);
