@@ -50,11 +50,8 @@ public class Node {
          try {
               // creates a socket instance
               Socket socket = new Socket(hostName , node._port);
-              PrintWriter writter = new PrintWriter(socket.getOutputStream());
-              writter.println("hello from " + node.user_name);
-
               node.sockets.add(socket);
-              System.out.println("Client socket created. Sockets size: " + node.sockets.size());
+              writeMessageToSockets(node.user_name,"Hello.", node);
               break;
           } catch (UnknownHostException e) {
               System.err.println("Couldn't find host  " + hostName);
