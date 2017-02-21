@@ -73,6 +73,7 @@ public class Node {
         DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
         clientWriter.writeBytes(message);
         System.out.println(node.user_name + ":" + message + "\n");
+        socket.close();
       }catch (IOException e){
         System.out.println("IOException was thrown." + e);
       }

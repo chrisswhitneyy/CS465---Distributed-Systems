@@ -24,7 +24,7 @@ public class SocketHandlerThread extends Node implements Runnable{
       String message = null;
       while ((message = clientReader.readLine()) != null) {
           super.writeMessageToSockets(ip,message,node);
-          System.out.println("Message: " + message);
+          System.out.println( ip + ": " + message);
       }
     }catch (IOException e){ }
 
