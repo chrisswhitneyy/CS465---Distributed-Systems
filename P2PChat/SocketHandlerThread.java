@@ -7,12 +7,12 @@ public class SocketHandlerThread extends Node implements Runnable{
   // the clients message and an output stream to send a message to the client
   Socket client;
   BufferedReader clientReader;
-  Node nodeObject;
+  Node node;
   String ip;
 
-  public SocketHandlerThread(Socket client, Node nodeObject) {
+  public SocketHandlerThread(Socket client, Node node) {
     this.client = client;
-    this.nodeObject = nodeObject;
+    this.node = node;
     ip = client.getLocalAddress().getHostAddress();
     System.out.println("\nConnection accpeted " + ip);
   }
@@ -24,7 +24,7 @@ public class SocketHandlerThread extends Node implements Runnable{
       String message = null;
       String ip = this.client.getLocalAddress().getHostAddress();
       while ((message = clientReader.readLine()) != null) {
-          super.writeMessageToSockets(ip,message,nodeObject);
+          super.writeMessageToSockets(ip,message,node);
       }
     }catch (IOException e){ }
 

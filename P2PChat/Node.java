@@ -65,6 +65,7 @@ public class Node {
    }
 
   public synchronized void writeMessageToSockets(String from, String message, Node node){
+    System.out.println("writeMessageToSockets ips size: " + node.ips.size());
     for (int i = 0; i < node.ips.size(); i++){
       try{
         String ip =  node.ips.get(i);
