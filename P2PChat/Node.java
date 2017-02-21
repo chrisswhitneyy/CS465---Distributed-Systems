@@ -14,7 +14,13 @@ public class Node {
   // Node constructor
   public Node(){
     this.ips = new ArrayList<String>();
-    this.ip = InetAddress.getLocalHost().getHostAddress();
+    try{
+      InetAddress localIp = InetAddress.getLocalHost();
+      this.ip = localIp.getHostAddress();
+    }catch(UnknownHostException e){
+      System.out.println("Unknown Host Exception: " + e);
+    }
+
   }
 
    public static void main (String[] args){
