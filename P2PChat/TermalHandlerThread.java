@@ -6,9 +6,8 @@ public class TermalHandlerThread extends Node implements Runnable{
 
   public TermalHandlerThread(Node nodeObject){
     this.nodeObject = nodeObject;
-
   }
-
+  
   //@override
   public void run(){
 

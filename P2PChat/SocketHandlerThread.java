@@ -19,16 +19,14 @@ public class SocketHandlerThread extends Node implements Runnable{
 
   //@override
   public void run(){
-
     try{
       this.clientReader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
       String message = null;
       String ip = this.client.getLocalAddress().getHostAddress();
       while ((message = clientReader.readLine()) != null) {
           super.writeMessageToSockets(ip,message,nodeObject);
+          System.out.println("SocketHandlerThread : " + message);
       }
-      System.out.println("Message : " + message);
-
     }catch (IOException e){ }
 
   }

@@ -11,12 +11,12 @@ public class Node {
   int _node_id;
   int _port = 2594;
 
-
   // Node constructor
   public Node(){
     this._node_id = 1;
     this.sockets = new ArrayList<Socket>();
   }
+
    public static void main (String[] args){
      System.out.println("======Peer-to-Peer Chat Application======");
      Node node = new Node();
@@ -49,7 +49,9 @@ public class Node {
 
          try {
               // creates a socket instance
-              Socket socket = new Socket(hostName, node._port);
+              Socket socket = new Socket(hostName , node._port);
+              DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
+              clientWriter.writeBytes("hello from " + node.user_name);
               node.sockets.add(socket);
               break;
           } catch (UnknownHostException e) {
@@ -73,7 +75,7 @@ public class Node {
         Socket socket =  node.sockets.get(i);
         DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
         clientWriter.writeBytes(message);
-        System.out.println("\n" + from + ":" + message);
+        System.out.println("\n" + node.user_name + ":" + message);
 
       }
     }catch (IOException e){}
