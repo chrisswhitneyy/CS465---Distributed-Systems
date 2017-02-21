@@ -74,6 +74,7 @@ public class Node {
         Socket socket =  node.sockets.get(i);
         DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
         clientWriter.writeBytes(message);
+        clientWriter.close();
         System.out.println("\n" + node.user_name + ":" + message);
 
       }

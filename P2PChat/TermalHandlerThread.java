@@ -2,12 +2,11 @@ import java.util.Scanner;
 
 public class TermalHandlerThread extends Node implements Runnable{
   Node nodeObject;
-  String localIp;
 
   public TermalHandlerThread(Node nodeObject){
     this.nodeObject = nodeObject;
   }
-  
+
   //@override
   public void run(){
 
@@ -17,7 +16,7 @@ public class TermalHandlerThread extends Node implements Runnable{
       System.out.print( "Enter message: " );
       // Read a line of text from the user.
       String input = scanner.nextLine();
-      super.writeMessageToSockets(nodeObject.user_name,input,nodeObject);
+      nodeObject.writeMessageToSockets(nodeObject.user_name,input,nodeObject);
     }
 
   }
