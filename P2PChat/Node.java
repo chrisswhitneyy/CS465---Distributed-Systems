@@ -49,7 +49,7 @@ public class Node {
               // creates a socket instance
               Socket socket = new Socket(hostName , node.port);
               node.ips.add(hostName);
-              node.writeMessageToSockets(node.user_name,"Hello.", node);
+              socket.close();
               break;
           } catch (UnknownHostException e) {
               System.err.println("Couldn't find host  " + hostName);
@@ -57,54 +57,49 @@ public class Node {
               System.err.println("Couldn't connection to  " + hostName);
           }
        }
-
      }
+     // thread out terminal listerner
      (new Thread(new TermalHandlerThread(node))).start();
-     node.startServer();
-
+     // start server
+     node.startServer(node);
    }
 
-  public synchronized void writeMessageToSockets(String from, String message, Node node){
-    System.out.println("writeMessageToSockets ips size: " + node.ips.size());
-    for (int i = 0; i < node.ips.size(); i++){
-      try{
-        String ip =  node.ips.get(i);
-        Socket socket = new Socket(ip , node.port);
-        DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
-        clientWriter.writeBytes(message);
-        System.out.println(node.user_name + ":" + message + "\n");
-        socket.close();
-      }catch (IOException e){
-        System.out.println("IOException was thrown." + e);
-      }
-    }
-    return;
-
-  }
+   public synchronized void writeMessageToSockets(String from, String message, Node node){
+     System.out.println("writeMessageToSockets ips size: " + node.ips.size());
+     for (int i = 0; i < node.ips.size(); i++){
+       try{
+         String ip =  node.ips.get(i);
+         Socket socket = new Socket(ip , node.port);
+         DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
+         clientWriter.writeBytes(message);
+         System.out.println(node.user_name + ":" + message + "\n");
+         socket.close();
+       }catch (IOException e){
+         System.out.println("IOException was thrown." + e);
+       }
+     }
+   }
 
 
-  public void startServer(){
-    try{
-      this.server_socket = new ServerSocket(this.port);
-    }catch (IOException error){
-      System.out.println( "Unable to create server socket. Error: "+ error);
-    }
+   public void startServer(Node node){
+     try{
+       this.server_socket = new ServerSocket(this.port);
+     }catch (IOException error){
+       System.out.println( "Unable to create server socket. Error: "+ error);
+     }
 
-    System.out.println( "Peer node " + this.user_name + " is running...");
+     System.out.println( "Peer node " + this.user_name + " is running...");
 
-    // server loop: infinitely loops and accepting clients
-    while (true) {
-      try{
-
-        Socket socket = server_socket.accept();
-        String ip = socket.getLocalAddress().getHostAddress();
-        this.ips.add(ip);
-        (new Thread(new SocketHandlerThread(socket, this))).start();
-
-      }
-      catch (IOException error){
-        System.out.println( "Unable to accept connection. Error: "+ error);
-      }
-    }
-  }
-}
+     // server loop: infinitely loops and accepting clients
+     while (true) {
+       try{
+         Socket socket = server_socket.accept();
+         String ip = socket.getLocalAddress().getHostAddress();
+         node.ips.add(ip);
+         (new Thread(new SocketHandlerThread(socket, node))).start();
+       }catch (IOException error){
+         System.out.println( "Unable to accept connection. Error: "+ error);
+       }
+     }
+   }
+ }
