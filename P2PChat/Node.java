@@ -6,15 +6,13 @@ import java.util.Scanner;
 
 public class Node {
   ServerSocket server_socket;
-  List<Socket> sockets;
+  List<String> ips;
   String user_name;
-  int _node_id;
-  int _port = 2594;
+  int port = 2594;
 
   // Node constructor
   public Node(){
-    this._node_id = 1;
-    this.sockets = new ArrayList<Socket>();
+    this.ips = new ArrayList<String>();
   }
 
    public static void main (String[] args){
@@ -49,8 +47,8 @@ public class Node {
 
          try {
               // creates a socket instance
-              Socket socket = new Socket(hostName , node._port);
-              node.sockets.add(socket);
+              Socket socket = new Socket(hostName , node.port);
+              node.ips.add(hostName);
               node.writeMessageToSockets(node.user_name,"Hello.", node);
               break;
           } catch (UnknownHostException e) {
@@ -69,16 +67,19 @@ public class Node {
   public synchronized void writeMessageToSockets(String from, String message, Node node){
     try{
 
-      for (int i = 0; i < node.sockets.size(); i++){
+      for (int i = 0; i < node.ips.size(); i++){
 
-        Socket socket =  node.sockets.get(i);
+        String ip =  node.ips.get(i);
+        Socket socket = new Socket(ip , node.port);
         DataOutputStream clientWriter = new DataOutputStream(socket.getOutputStream());
         clientWriter.writeBytes(message);
         clientWriter.close();
-        System.out.println("\n" + node.user_name + ":" + message);
+        System.out.println(node.user_name + ":" + message + "\n");
 
       }
-    }catch (IOException e){}
+    }catch (IOException e){
+      System.out.println("IOException was thrown." + e);
+    }
     return;
 
   }
@@ -86,19 +87,20 @@ public class Node {
 
   public void startServer(){
     try{
-      this.server_socket = new ServerSocket(this._port);
+      this.server_socket = new ServerSocket(this.port);
     }catch (IOException error){
       System.out.println( "Unable to create server socket. Error: "+ error);
     }
 
-    System.out.println( "Peer node " + this._node_id + " is running...");
+    System.out.println( "Peer node " + this.user_name + " is running...");
 
     // server loop: infinitely loops and accepting clients
     while (true) {
       try{
 
         Socket socket = server_socket.accept();
-        this.sockets.add(socket);
+        String ip = socket.getLocalAddress().getHostAddress();
+        this.ips.add(ip);
         (new Thread(new SocketHandlerThread(socket, this))).start();
 
       }
