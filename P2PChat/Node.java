@@ -54,7 +54,6 @@ public class Node {
               clientWriter.writeBytes("hello from " + node.user_name);
               node.sockets.add(socket);
               System.out.println("Client socket created. Sockets size: " + node.sockets.size());
-              break;
           } catch (UnknownHostException e) {
               System.err.println("Couldn't find host  " + hostName);
           } catch (IOException e) {
