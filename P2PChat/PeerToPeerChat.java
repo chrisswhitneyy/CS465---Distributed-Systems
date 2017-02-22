@@ -43,11 +43,6 @@ class PeerToPeerChat{
             socket = new Socket(hostName , node.port);
             node.ips.add(hostName);
 
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            out.println(hostName + " says hello.");
-
             break;
           } catch (UnknownHostException e) {
             System.err.println("Couldn't find host  " + hostName);
