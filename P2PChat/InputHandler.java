@@ -15,8 +15,10 @@ class InputHandler implements Runnable{
   //@override
   public void run(){
 
+    System.out.println("Node " + node.user_name +" is running...");
+
     while (true){
-      System.out.println("Node " + node.user_name +" is running...");
+
       try{
           // waits to accept a socket
          serverSocket = new ServerSocket(node.port);
@@ -33,7 +35,8 @@ class InputHandler implements Runnable{
 
          System.out.println("IP: " + ip + " has joined.");
          socket.close();
-         
+         serverSocket.close();
+
        }catch (IOException error){
          System.out.println( "Unable to accept connection. Error: "+ error);
        }
