@@ -27,7 +27,7 @@ class SocketHandler implements Runnable {
     try{
       this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       while ((message = reader.readLine()) != null) {
-          parent.writeMessageToAllIps(parent,parent.ips.get(0),message);
+          parent.writeMessageToAllIps(parent,parent.ips.get(1),message);
           System.out.println(message);
       }
     }catch (IOException e){
