@@ -11,14 +11,6 @@ class InputHandler implements Runnable{
   public InputHandler(Node node){
     this.node = node;
   }
-  public String messagePrompt(){
-    /// Prompt the user for user_name
-    Scanner scanner = new Scanner( System.in );
-    System.out.print( "Message: " );
-    // Read a line of text from the user.
-    String input = scanner.nextLine();
-    return input;
-  }
 
   //@override
   public void run(){
@@ -32,23 +24,18 @@ class InputHandler implements Runnable{
          String ip = socket.getRemoteSocketAddress().toString().replace("/","");
          ip = ip.split(":")[0]; // removes the port
 
-         if (!node.ips.contains(ip)){
-            node.ips.add(ip);
-         }
+         node.addNode(ip);
 
          System.out.println("IP: " + ip + " was accepted.");
 
          String message;
          BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
          while ((message = reader.readLine()) != null) {
-             //parent.writeMessageToAllIps(parent,this.ip,message);
              System.out.println(message);
-             //writeToSingleIp(ip,message);
          }
        }catch (IOException error){
          System.out.println( "Unable to accept connection. Error: "+ error);
        }
-       messagePrompt();
     }
   }
 }

@@ -54,5 +54,6 @@ class PeerToPeerChat{
       // thread out input handler
       (new Thread(new InputHandler(node))).start();
       // thread out output handler
+      (new Thread(new OutputHandler(node))).start();
   }
 }
