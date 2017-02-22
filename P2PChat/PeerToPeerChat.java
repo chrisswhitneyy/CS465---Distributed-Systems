@@ -30,7 +30,7 @@ class PeerToPeerChat{
         System.out.println("Input must be a 1 or 2, " + num + " is not valid.");
       }
     }
-    /*if (num == 2){
+    if (num == 2){
       while (true){
         // Prompt the user
         System.out.print( "Enter hostname or ip: " );
@@ -49,7 +49,7 @@ class PeerToPeerChat{
             System.err.println("Couldn't connection to  " + hostName);
           }
         }
-      }*/
+      }
       // thread out terminal listerner
       //(new Thread(new TermalHandlerThread(node))).start();
       // start server
