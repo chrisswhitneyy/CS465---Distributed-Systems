@@ -42,12 +42,11 @@ class PeerToPeerChat{
             // creates a socket instance
             socket = new Socket(hostName , node.port);
             node.ips.add(hostName);
-            
+
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String ip = socket.getRemoteSocketAddress().toString().replace("/","");
-            ip = ip.split(":")[0];
-            out.println(ip + " says hello.");
+
+            out.println(hostName + " says hello.");
 
             break;
           } catch (UnknownHostException e) {
