@@ -51,13 +51,8 @@ class PeerToPeerChat{
           }
         }
       }
-
-
-
-      // thread out terminal listerner
-      //(new Thread(new TermalHandlerThread(node))).start();
-      // start server
-      node.startServer(node);
-   //}
+      // thread out input handler
+      (new Thread(new InputHandler(node))).start();
+      // thread out output handler
   }
 }
