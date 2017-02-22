@@ -8,6 +8,8 @@ class PeerToPeerChat{
 
   public static void main(String [] args){
     System.out.println("======Peer-to-Peer Chat Application======");
+    System.out.println("+Users can choose to start a new chat or join an existing one.");
+    System.out.println("+Users can leave at any point by entering q.");
 
     // Prompt the user for user_name
     Scanner scanner = new Scanner( System.in );
