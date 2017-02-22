@@ -32,11 +32,12 @@ class InputHandler implements Runnable{
          handler.start();
 
          System.out.println("IP: " + ip + " has joined.");
-
+         socket.close();
+         
        }catch (IOException error){
          System.out.println( "Unable to accept connection. Error: "+ error);
        }
-       socket.close();
+
     }
   }
   class SingleSocketHandler extends Thread{
