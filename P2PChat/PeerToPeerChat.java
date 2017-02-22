@@ -31,6 +31,7 @@ class PeerToPeerChat{
       }
     }
     if (num == 2){
+      Socket socket;
       while (true){
         // Prompt the user
         System.out.print( "Enter hostname or ip: " );
@@ -39,9 +40,8 @@ class PeerToPeerChat{
 
         try {
             // creates a socket instance
-            Socket socket = new Socket(hostName , node.port);
+            socket = new Socket(hostName , node.port);
             node.ips.add(hostName);
-            socket.close();
             break;
           } catch (UnknownHostException e) {
             System.err.println("Couldn't find host  " + hostName);
@@ -50,6 +50,11 @@ class PeerToPeerChat{
           }
         }
       }
+
+      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      out.println(node.ip + " says hello.");
+
       // thread out terminal listerner
       //(new Thread(new TermalHandlerThread(node))).start();
       // start server

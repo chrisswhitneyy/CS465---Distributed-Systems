@@ -15,7 +15,7 @@ class SocketHandler implements Runnable {
     this.socket = socket;
     this.ip = this.socket.getRemoteSocketAddress().toString().replace("/","");
     this.ip = this.ip.split(":")[0];
-    
+
     System.out.println(this.ip + " has joined.");
 
   }
