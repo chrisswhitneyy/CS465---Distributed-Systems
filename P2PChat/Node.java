@@ -22,6 +22,7 @@ class Node {
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       out.println(message);
+      System.out.println("TO:" + from_ip + " MESSAGE: " + message);
 
     }catch (IOException e){
       System.err.println("IOException: " + e);
