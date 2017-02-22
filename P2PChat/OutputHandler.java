@@ -38,11 +38,16 @@ class OutputHandler implements Runnable{
       }
     }
   }
+
   // @override
   public void run(){
     String message;
     while (true){
       message = messagePrompt();
+      if (message.compareTo("q") == 0){
+        writeMessageToAllIps(this.node.user_name + " has left the chat.");
+        System.exit(1);
+      }
       writeMessageToAllIps(message);
     }
   }

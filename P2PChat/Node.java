@@ -14,7 +14,7 @@ class Node {
     this.isConnected = false;
   }
 
-  public void addNode(String ip){
+  public synchronized void addNode(String ip){
     if (!this.ips.contains(ip)){
        this.ips.add(ip);
     }
