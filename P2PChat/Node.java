@@ -30,6 +30,6 @@ class Node {
     }
   }
   public void writeToAllIps (Node node, String message){
-    
+
   }
 } // end of Node class
