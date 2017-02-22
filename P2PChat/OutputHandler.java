@@ -24,6 +24,7 @@ class OutputHandler implements Runnable{
     // loops through each ip in the nodes ip list
     for (String ip : this.node.ips){
       try {
+        System.out.println("Wrote message : " + message + " to IP: " + ip);
         // attempts to create a socket with the ip and node port
         Socket socket = new Socket(ip, this.node.port);
         // create a print writer instance using socket output stream
