@@ -27,13 +27,16 @@ class InputHandler implements Runnable{
          // get ip from the socket
          String ip = socket.getRemoteSocketAddress().toString().replace("/","");
          ip = ip.split(":")[0]; // removes the port
+
+         if ( !node.ips.contains(ip) ){
+           System.out.println(node.user_name + " has joined.");
+         }
          node.addNode(ip); // adds ip to nodes list
 
          // thread out socket handler
          SingleSocketHandler handler = new SingleSocketHandler(socket);
          handler.start();
 
-         System.out.println("IP: " + ip + " has joined.");
          serverSocket.close();
 
        }catch (IOException error){

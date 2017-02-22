@@ -42,7 +42,7 @@ class PeerToPeerChat{
             // creates a socket instance
             socket = new Socket(hostName , node.port);
             node.ips.add(hostName);
-
+            node.isConnected = true;
             break;
           } catch (UnknownHostException e) {
             System.err.println("Couldn't find host  " + hostName);

@@ -14,7 +14,7 @@ class OutputHandler implements Runnable{
   public String messagePrompt(){
     // Prompt the user for user_name
     Scanner scanner = new Scanner( System.in );
-    System.out.print( "Message: " );
+    System.out.print( "Enter Message: " );
     // Read a line of text from the user.
     String input = scanner.nextLine();
     return input;
@@ -24,13 +24,12 @@ class OutputHandler implements Runnable{
     // loops through each ip in the nodes ip list
     for (String ip : this.node.ips){
       try {
-        System.out.println("Wrote message : " + message + " to IP: " + ip);
         // attempts to create a socket with the ip and node port
         Socket socket = new Socket(ip, this.node.port);
         // create a print writer instance using socket output stream
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         // write message to the writer
-        out.println(message);
+        out.println(this.node.user_name + ":" + message);
         // close socket
         socket.close();
 
