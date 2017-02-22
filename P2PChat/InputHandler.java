@@ -18,24 +18,54 @@ class InputHandler implements Runnable{
     while (true){
       System.out.println("Node " + node.user_name +" is running...");
       try{
+          // waits to accept a socket
          serverSocket = new ServerSocket(node.port);
          Socket socket = serverSocket.accept();
+
          // get ip from the socket
          String ip = socket.getRemoteSocketAddress().toString().replace("/","");
          ip = ip.split(":")[0]; // removes the port
+         node.addNode(ip); // adds ip to nodes list
 
-         node.addNode(ip);
+         // thread out socket handler
+         SingleSocketHandler handler = new SingleSocketHandler(socket);
+         handler.start();
 
-         System.out.println("IP: " + ip + " was accepted.");
+         System.out.println("IP: " + ip + " has joined.");
 
-         String message;
-         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-         while ((message = reader.readLine()) != null) {
-             System.out.println(message);
-         }
        }catch (IOException error){
          System.out.println( "Unable to accept connection. Error: "+ error);
        }
     }
   }
-}
+  class SingleSocketHandler extends Thread{
+    Socket socket;
+    BufferedReader reader;
+
+    public SingleSocketHandler(Socket socket){
+      this.socket = socket;
+    }
+    public void run(){
+      // checks to make sure that the buffer reader can be created
+      try {
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      } catch (IOException e) {
+        // if an error accure return
+        System.err.println("IOException:" + e);
+        return;
+      }
+
+      while(true){
+        try {
+          String message = reader.readLine();
+          if(message == null){
+            break;
+          }
+          System.out.println(message);
+        } catch (IOException e) {
+          System.err.println("IOException:" + e);
+        }
+      }
+    }// end of SingleSocketHandler run()
+  } // end of SingleSocketHandler
+} // end of InputHandler
