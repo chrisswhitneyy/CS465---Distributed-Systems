@@ -34,7 +34,6 @@ class InputHandler implements Runnable{
          handler.start();
 
          System.out.println("IP: " + ip + " has joined.");
-         socket.close();
          serverSocket.close();
 
        }catch (IOException error){
