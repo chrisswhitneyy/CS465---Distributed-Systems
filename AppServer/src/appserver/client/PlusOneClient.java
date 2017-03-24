@@ -29,13 +29,15 @@ public class PlusOneClient implements MessageTypes{
             System.out.println("[PlusOneClient.PlusOneClient] Host: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
             System.out.println("[PlusOneClient.PlusOneClient] Port: " + port);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("[PlusOneClient] Error: " + e);
+            e.printStackTrace();
         }
     }
     
     public void run() {
         try { 
+            
             // connect to application server
             Socket server = new Socket(host, port);
             
@@ -56,9 +58,10 @@ public class PlusOneClient implements MessageTypes{
             ObjectInputStream readFromNet = new ObjectInputStream(server.getInputStream());
             Integer result = (Integer) readFromNet.readObject();
             System.out.println("RESULT: " + result);
-        } catch (Exception ex) {
-            System.err.println("[PlusOneClient.run] Error occurred");
-            ex.printStackTrace();
+            
+        } catch (Exception e) {
+            System.err.println("[PlusOneClient.run] Error: " + e);
+            e.printStackTrace();
         }
     }
 
