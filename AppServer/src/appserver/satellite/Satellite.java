@@ -142,8 +142,6 @@ public class Satellite extends Thread {
                         Object result = tool.go(job.getParameters());
 
                         // sending results back 
-                        writeToNet = new ObjectOutputStream(jobRequest.getOutputStream());
-                        
                         writeToNet.writeObject(result);
                         
                         
