@@ -23,10 +23,10 @@ import utils.PropertyHandler;
  * @author Dr.-Ing. Wolf-Dieter Otte
  */
 public class Satellite extends Thread {
-    private PropertyHandler satelliteProperties; 
+    private PropertyHandler satelliteProperties;
     private PropertyHandler classLoaderProperties;
     private PropertyHandler serverProperties;
-    
+
     private ConnectivityInfo satelliteInfo = new ConnectivityInfo();
     private ConnectivityInfo serverInfo = new ConnectivityInfo();
     private HTTPClassLoader classLoader = null;
@@ -40,67 +40,67 @@ public class Satellite extends Thread {
             satelliteProperties = new PropertyHandler(satellitePropertiesFile);
             classLoaderProperties = new PropertyHandler(classLoaderPropertiesFile);
             serverProperties = new PropertyHandler(serverPropertiesFile);
-            
+
         } catch (Exception e) {
             System.err.println("[Satellite] Error: " + e);
         }
-        
+
         //*** TODO Not needed for Part 1
         // create a socket info object that will be sent to the server
         // ...
-        
-        
+
+
         // get connectivity information of the server
         // ...
         //****
-        
-        
+
+
         // creates an instance of classLoader w/ classLoaderPropertiesFile
         // -------------------
         initClassLoader();
-        
-               
+
+
         // create tools cache
         // -------------------
         toolsCache = new Hashtable();
-        
+
     }
 
     @Override
     public void run() {
-        
+
         //**** TODO Not need for Part 1
         // register this satellite with the SatelliteManager on the server
         // ---------------------------------------------------------------
         // ...
-        
-        
+
+
         // create server socket
         // ---------------------------------------------------------------
         ServerSocket serverSocket;
-        
+
         // Get port from satelliteProperties
         String portString = satelliteProperties.getProperty("PORT");
-        
-        
+
+
         // start taking job requests in a server loop
         // ---------------------------------------------------------------
-        try{ 
-            // creates an instance of a server socket 
+        try{
+            // creates an instance of a server socket
             serverSocket = new ServerSocket(Integer.parseInt(portString));
-            
-            
+
+
             // server loop: infinitely loops and accepting clients
             while (true) {
                 System.out.println("[Satellite.run] Waiting to accept a request on port " + portString + "... ");
                 // nesting of instantiation makes it impossible for race conditions
                (new Thread(new SatelliteThread(serverSocket.accept() ,this))).start();
             }
-       
+
         } catch (IOException e) {
             System.err.println("[Satellite.run] Error: " + e);
         }
-        
+
     }
 
     // inner helper class that is instanciated in above server loop and processes job requests
@@ -113,7 +113,7 @@ public class Satellite extends Thread {
         DataInputStream readStream = null;
         PrintStream writeStream = null;
         Message message = null;
-        
+
 
         SatelliteThread(Socket jobRequest, Satellite satellite) {
             this.jobRequest = jobRequest;
@@ -122,15 +122,15 @@ public class Satellite extends Thread {
 
         @Override
         public void run() {
-            
-            try{ 
-                // setting up object streams
+
+            try{
+                // setting up object streams! DO THIS ONLY ONCE!
                 readFromNet = new ObjectInputStream(jobRequest.getInputStream());
                 writeToNet = new ObjectOutputStream(jobRequest.getOutputStream());
-                
+
                 // reading message
                message = (Message) readFromNet.readObject();
-               
+
                 // processing message
                 switch (message.getType()) {
                     case JOB_REQUEST:
@@ -140,28 +140,26 @@ public class Satellite extends Thread {
                         Tool tool = getToolObject( job.getToolName() );
                         // Calculates result
                         Object result = tool.go(job.getParameters());
-
-                        // sending results back 
+                        // sending results back
                         writeToNet.writeObject(result);
-                        
-                        
+
                         System.out.println("[SatelliteThread.run] Sent result back.");
                         break;
 
                     default:
                         System.err.println("[SatelliteThread.run] Warning: Message type not implemented");
                 }
-            
-            
+
+
             } catch (IOException e) {
                 System.err.println("[SatelliteThread.run] Error: Couldn't setup object stream. " + e);
             } catch (ClassNotFoundException e){
                 System.err.println("[SatelliteThread.run] Error: Couldn't not read object stream. " + e);
             } catch (Exception e){
                 System.err.println("[SatelliteThread.run] Error: " + e);
-            } 
-            
-            
+            }
+
+
         }
     }
 
@@ -173,24 +171,28 @@ public class Satellite extends Thread {
 
         Tool toolObject = null;
 
+        // Gets tool if it's in the cache
         if ((toolObject = (Tool) toolsCache.get(toolClassString)) == null) {
             System.out.println("\" Tools Class: " + toolClassString);
-            
+            // Throw unknown tool expection
             if (toolClassString == null) {
                 throw new UnknownToolException();
             }
-
+            // Load tool from class loader
             Class toolClass = classLoader.loadClass(toolClassString);
+            // New instance of the tool class and cast it to a tool
             toolObject = (Tool) toolClass.newInstance();
+            // Puts tool into cache
             toolsCache.put(toolClassString, toolObject);
         } else {
+            // Message showing tool already in the cachce
             System.out.println("Tool: \"" + toolClassString + "\" already in Cache");
         }
 
         return toolObject;
     }
-        
-        
+
+
     /**
      * Auxiliary method for initializing the class loader
      */
@@ -214,15 +216,15 @@ public class Satellite extends Thread {
             System.exit(1);
         }
     }
-    
+
     public static void main(String[] args) {
         // start a satellite
         Satellite satellite = new Satellite(args[0], args[1], args[2]);
         satellite.run();
-        
+
         //(new Satellite("Satellite.Earth.properties", "WebServer.properties")).start();
         //(new Satellite("Satellite.Venus.properties", "WebServer.properties")).start();
         //(new Satellite("Satellite.Mercury.properties", "WebServer.properties")).start();
     }
-    
+
 }
