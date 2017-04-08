@@ -5,14 +5,11 @@
 \margl1440\margr1440\vieww9580\viewh8400\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\fs24 \cf2 Start \cf2 \CocoaLigature0 Satellite\cf2 \CocoaLigature1 : \
+\f0\fs24 \cf2 Start \CocoaLigature0 Satellite\CocoaLigature1 : \
 ===========================\
-java\cf2 \CocoaLigature0  appserver.satellite.Satellite  ../../config/Satellite.Earth.properties ../../config/ClassLoader.properties ../../config/Server.properties \
-\
+java\CocoaLigature0  appserver.satellite.Satellite  ../../config/Satellite.Earth.properties ../../config/ClassLoader.properties ../../config/Server.properties \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf2 java appserver.client.FibClient ../../config/Server.properties \
-\
-\
+\cf2 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf2 Server:\
 ===========================\
@@ -21,11 +18,14 @@ java\cf2 \CocoaLigature0  appserver.satellite.Satellite  ../../config/Satellite.
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf2 Start Client: \
-\cf2 \CocoaLigature1 ===========================\
-java appserver.client.PlusOneClient \cf2 \CocoaLigature0 ../../config/Server.properties \
+\CocoaLigature1 ===========================\
+java appserver.client.PlusOneClient \CocoaLigature0 ../../config/Server.properties \
 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf2 java appserver.client.FibClient ../../config/Server.properties \
 \
-WebServer: \
-\cf2 \CocoaLigature1 ===========================\cf2 \CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 WebServer: \
+\CocoaLigature1 ===========================\CocoaLigature0 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
 \cf2 java web.SimpleWebServer ../../config/WebServer.properties}
