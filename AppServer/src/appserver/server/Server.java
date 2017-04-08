@@ -19,8 +19,8 @@ import utils.PropertyHandler;
 public class Server {
 
     // Singleton objects - there is only one of them. For simplicity, this is not enforced though ...
-    static SatelliteManager satelliteManager = null;
-    static LoadManager loadManager = null;
+    static SatelliteManager satelliteManager = new SatelliteManager();
+    static LoadManager loadManager = new LoadManager();
     static ServerSocket serverSocket = null;
     
     // define server properties
@@ -29,10 +29,6 @@ public class Server {
     Properties properties;
 
     public Server(String serverPropertiesFile) {
-
-        // create satellite and load managers
-        satelliteManager = new SatelliteManager();
-        loadManager = new LoadManager();
         
         // read properties and create server socket
         try {
@@ -60,7 +56,7 @@ public class Server {
             try{
                 // nesting of instantiation makes it impossible for race conditions
                 (new Thread(new ServerThread(serverSocket.accept()))).start();
-            }catch (Exception e) {
+            }catch (IOException e) {
                 System.err.println("[Server] Error: " + e);
                 e.printStackTrace();
             }
@@ -102,6 +98,8 @@ public class Server {
                     // read satellite info
                     satelliteInfo = (ConnectivityInfo) message.getContent();
                     
+                    System.out.println("[ServerThread] Name: " + satelliteInfo.getName() );
+                    
                     // register satellite
                     synchronized (Server.satelliteManager) {
                         satelliteManager.registerSatellite(satelliteInfo);
@@ -125,6 +123,7 @@ public class Server {
                         
                             // get connectivity info for next satellite from satellite manager
                             satelliteInfo = satelliteManager.getSatelliteForName(satelliteName);
+                            System.out.println("[ServerThread.run] Satellite " + satelliteInfo.getName() + " selected.");
                         }catch (Exception e) {
                             System.err.println("[ServerThread.run] Error: " + e);
                             e.printStackTrace();
@@ -138,21 +137,28 @@ public class Server {
                     ObjectOutputStream sattilleteWriteFromNet;
                     
                     try{
-                       // connect to satellite
+                        // connect to satellite
                         satellite = new Socket(satelliteInfo.getHost(),satelliteInfo.getPort());
+                        System.out.println("[ServerThread.run] Connected to satellite.");
 
                         // open object streams,
                         // setting up object streams
-                        sattilleteReadFromNet = new ObjectInputStream(satellite.getInputStream());
                         sattilleteWriteFromNet = new ObjectOutputStream(satellite.getOutputStream());
-                
+                        sattilleteReadFromNet = new ObjectInputStream(satellite.getInputStream());
+                        
+                        System.out.println("[ServerThread.run] Streams to satellite created.");
+                        
                         // forward message (as is) to satellite,
                         sattilleteWriteFromNet.writeObject(message);
+                        System.out.println("[ServerThread.run] Job sent to satellite " + satelliteInfo.getName() );
                         // receive result from satellite
-                        message = (Message) readFromNet.readObject();
+                        Object result  = sattilleteReadFromNet.readObject();
+                        System.out.println("[ServerThread.run] Job result recieved from satellite " + satelliteInfo.getName() );
                          
                         // write result back to client
-                        writeToNet.writeObject(message);
+                        writeToNet.writeObject(result);
+                        System.out.println("[ServerThread.run] Job forwarded to client ");
+                         
                         
                     }catch (Exception e) {
                             System.err.println("[ServerThread.run] Error: " + e);
