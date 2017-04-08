@@ -44,15 +44,15 @@ public class Satellite extends Thread {
         } catch (Exception e) {
             System.err.println("[Satellite] Error: " + e);
         }
-
-        //*** TODO Not needed for Part 1
+       
         // create a socket info object that will be sent to the server
-        // ...
-
+        satelliteInfo.setHost(satelliteProperties.getProperty("HOST"));
+        satelliteInfo.setHost(satelliteProperties.getProperty("PORT"));
+        
 
         // get connectivity information of the server
-        // ...
-        //****
+        serverInfo.setHost(serverProperties.getProperty("HOST"));
+        serverInfo.setHost(serverProperties.getProperty("PORT"));
 
 
         // creates an instance of classLoader w/ classLoaderPropertiesFile
@@ -69,11 +69,18 @@ public class Satellite extends Thread {
     @Override
     public void run() {
 
-        //**** TODO Not need for Part 1
-        // register this satellite with the SatelliteManager on the server
-        // ---------------------------------------------------------------
-        // ...
-
+        try{
+            // register this satellite with the SatelliteManager on the server
+            // ---------------------------------------------------------------
+            Message message = new Message(3,satelliteInfo);
+            Socket socket = new Socket(serverProperties.getProperty("HOST"),
+                    Integer.parseInt(serverProperties.getProperty("PORT")));
+            ObjectOutputStream writeToNet = new ObjectOutputStream(socket.getOutputStream());
+            writeToNet.writeObject(message);
+        }catch (IOException e) {
+            System.err.println("[Satellite.run] Error: " + e);
+        }
+        
 
         // create server socket
         // ---------------------------------------------------------------
