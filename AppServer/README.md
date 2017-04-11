@@ -1,37 +1,33 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf820
-{\fonttbl\f0\fnil\fcharset0 AndaleMono;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
-{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0;}
-\margl1440\margr1440\vieww9580\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+# CS465 Application Server 
+This collection of programs dynamically loads classes (i.e. specific jobs) that are requested from a client. These job requests are forwarded to the satilites through the main server and then sent back to the client. The server handles regiestering these satilites and load managing the request. The classes are servered by the WebServer. Within the config folder is properites for each of these components, which allows for this system to be distrubuted accross multiple machinces.  
 
-\f0\fs24 \cf2 # CS465 Application Server Run Instructions \
-The following is the command line instructions to run the satellites (execute the jobs), the sever (load managers and registers satellites), the clients (request the jobs), and the web server (which servers the requested job class). \
-\
-##Start \CocoaLigature0 Satellites\CocoaLigature1 : \
-\
-java\CocoaLigature0  appserver.satellite.Satellite  ../../config/Satellite.Earth.properties ../../config/ClassLoader.properties ../../config/Server.properties \
-\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf2 java appserver.client.FibClient ../../config/Server.properties \
-\
-\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf2 ##Server:\
-\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf2 java appserver.server.Server ../../config/Server.properties\
-\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf2 ##Start Clients: \
-\CocoaLigature1 \
-java appserver.client.PlusOneClient \CocoaLigature0 ../../config/Server.properties \
-\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf2 java appserver.client.FibClient ../../config/Server.properties \
-\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf2 ##WebServer: \
-\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf2 java web.SimpleWebServer ../../config/WebServer.properties}
+# Run Instructions 
+The following is the command line instructions to run the satellites (executes the jobs), the sever (load managers and registers satellites), the clients (request the jobs), and the web server (servers the job classes). 
+
+Notes: 
+- Inorder to insure that the job implementation classes don't load locally move the comiplied class files to the docRoot with the same subfolders as when built.
+- Also to insure that the satellites are regiestered promptly and that the webserver can server the job classes boot up each program in the order below. 
+
+## Server:
+
+java appserver.server.Server ../../config/Server.properties
+
+## WebServer: 
+
+java web.SimpleWebServer ../../config/WebServer.properties
+
+## Start Satellites
+
+java appserver.satellite.Satellite  ../../config/Satellite.Earth.properties ../../config/ClassLoader.properties ../../config/Server.properties 
+
+java appserver.satellite.Satellite  ../../config/Satellite.Venus.properties ../../config/ClassLoader.properties ../../config/Server.properties 
+
+java appserver.satellite.Satellite  ../../config/Satellite.Mercury.properties ../../config/ClassLoader.properties ../../config/Server.properties 
+
+## Start Clients: 
+
+java appserver.client.PlusOneClient ../../config/Server.properties
+
+java appserver.client.FibClient ../../config/Server.properties 
+
+
