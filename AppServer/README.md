@@ -15,7 +15,7 @@ java appserver.server.Server ../../config/Server.properties
 
 ## Start Clients: 
 
-java appserver.client.PlusOneClient \CocoaLigature0 ../../config/Server.properties
+java appserver.client.PlusOneClient ../../config/Server.properties
 
 java appserver.client.FibClient ../../config/Server.properties 
 
