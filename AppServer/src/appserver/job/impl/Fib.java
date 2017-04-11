@@ -3,18 +3,30 @@ package appserver.job.impl;
 import appserver.job.Tool;
 
 /**
- * Class [PlusOne] Simple POC class that implements the Tool interface
+ * Class [Fib] calculates the fibonacci number that implements the Tool interface
  * 
- * @author Dr.-Ing. Wolf-Dieter Otte
+ * @author Christopher D. Whitney 
  */
 public class Fib implements Tool{
 
-    FibAux helper = null;
+
+    /** Fib: Recursively calculates the fibonacci number of a passed integer. 
+     *  This is implemented as a class method so that memory isn't wasted by 
+     *  repeatedly creating new instance of objects. 
+     */
+    static public Integer fib(Integer number){
+        if(number == 0){
+            return 0;
+        }
+        else if(number == 1){
+            return 1;
+        }
+        return fib(number - 1) + fib(number - 2);
+    }
+    
     
     @Override
     public Object go(Object parameters) {
-        
-        helper = new FibAux((Integer) parameters);
-        return helper.getResult();
+        return Fib.fib((Integer) parameters);
     }
 }
