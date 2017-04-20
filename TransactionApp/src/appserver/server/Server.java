@@ -1,16 +1,24 @@
 package appserver.server;
 
 import appserver.comm.Message;
-import static appserver.comm.MessageTypes.JOB_REQUEST;
-import static appserver.comm.MessageTypes.REGISTER_SATELLITE;
-import appserver.comm.ConnectivityInfo;
+import static appserver.comm.MessageTypes.OPEN_TRANS;
+import static appserver.comm.MessageTypes.CLOSE_TRANS;
+import static appserver.comm.MessageTypes.READ;
+import static appserver.comm.MessageTypes.WRITE;
+import server.DataManager;
+import server.LockManager;
+import server.TransManager;
+import utils.PropertyHandler;
+
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
-import utils.PropertyHandler;
+
+
 
 /**
  *
@@ -19,8 +27,10 @@ import utils.PropertyHandler;
 public class Server {
 
     // Singleton objects - there is only one of them. For simplicity, this is not enforced though ...
-    static SatelliteManager satelliteManager = new SatelliteManager();
-    static LoadManager loadManager = new LoadManager();
+    static DataManager dataManager = new DataManager();
+    static LockManager lockManager = new LockManager();
+    static TransManager transManager = new TransMananger();
+
     static ServerSocket serverSocket = null;
     
     // define server properties

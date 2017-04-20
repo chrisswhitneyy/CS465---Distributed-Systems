@@ -2,7 +2,6 @@ package appserver.client;
 
 import appserver.comm.Message;
 import appserver.comm.MessageTypes;
-import appserver.job.Job;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,7 +15,7 @@ import utils.PropertyHandler;
  * 
  * @author Christopher D. Whitney 
  */
-public class FibClient extends Thread implements MessageTypes{
+public class Client extends Thread implements MessageTypes{
     
     String host = null;
     int port;
@@ -24,20 +23,37 @@ public class FibClient extends Thread implements MessageTypes{
     Properties properties;
     Integer number;
 
-    public FibClient(String serverPropertiesFile, Integer number) {
+    public Client(String serverPropertiesFile, Integer number) {
         try {
             properties = new PropertyHandler(serverPropertiesFile);
             host = properties.getProperty("HOST");
-            System.out.println("[FibClient.FibClient] Host: " + host);
+            System.out.println("[Client.FibClient] Host: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
-            System.out.println("[FibClient.FibClient] Port: " + port);
+            System.out.println("[Client.FibClient] Port: " + port);
         } catch (Exception e) {
-            System.err.println("[FibClient] Error: " + e);
+            System.err.println("[Client] Error: " + e);
             e.printStackTrace();
         }
         this.number = number;
     }
-    
+
+    public int openTrans(){
+        int id = 0;
+        return id;
+    }
+    public boolean closeTrans(){
+        boolean flag = false;
+        return flag;
+
+    }
+    public Message read(){
+        Message message;
+        return message;
+    }
+    public boolean write (Message message){
+        boolean flag = false;
+        return  false;
+    }
     @Override
     public void run() {
         try { 
@@ -64,7 +80,7 @@ public class FibClient extends Thread implements MessageTypes{
             System.out.println("RESULT: " + result);
             
         } catch (Exception e) {
-            System.err.println("[PlusOneClient.run] Error: " + e);
+            System.err.println("[Client.run] Error: " + e);
             e.printStackTrace();
         }
     }
@@ -74,9 +90,8 @@ public class FibClient extends Thread implements MessageTypes{
         /* Threads out the FibClient on numbers = 46,45.....0 to calculate 
             the fibonacci number */ 
         for (int i=46;i>0;i--){
-          (new FibClient("../../config/Server.properties",i)).start();  
+          (new appserver.client.Client("../../config/Server.properties",i)).start();
         }
-        
         
     }  
 }
