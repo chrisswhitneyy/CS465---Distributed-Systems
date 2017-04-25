@@ -1,6 +1,7 @@
-package server;
+package appserver.server;
 
-import appserver.comm.ConnectivityInfo;
+import javax.sql.rowset.spi.TransactionalWriter;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -10,32 +11,21 @@ import java.util.Hashtable;
  */
 public class TransManager {
 
-    // (the one) hash table that contains the connectivity information of all satellite servers
-    static private Hashtable<String, ConnectivityInfo> satellites = null;
+    private static int transCounter;
+    private static ArrayList<Trans> transactions;
 
-    public TransManager() {
-        satellites = new Hashtable<String, ConnectivityInfo>();
-    }
-
-    public void registerSatellite(ConnectivityInfo satelliteInfo) {
-        satellites.put(satelliteInfo.getName(), satelliteInfo);
+    TransManager(){
+        transCounter = 0;
+        transactions = new ArrayList();
     }
 
-    public ConnectivityInfo getSatelliteForName(String satelliteName) {
-        return satellites.get(satelliteName);
-    }
-    
-    public Enumeration getSatellites() {
-        return satellites.elements();
+    public void runTrans(Socket client){
+
     }
 
-    public void showSatellites() {
-        ConnectivityInfo satelliteInfo = null;
-        Enumeration satelliteEnum = this.getSatellites();
-        System.err.println("\n[ServerThread.run] registered satellites");
-        while (satelliteEnum.hasMoreElements()) {
-            satelliteInfo = (ConnectivityInfo) satelliteEnum.nextElement();
-            System.out.println("Satellite IP  : " + satelliteInfo.getHost() + " Satellite port: " + satelliteInfo.getPort() + " Satellite name: " + satelliteInfo.getName());
-        }
+    private class TransManagerThread extends Thread  {
+
     }
+
+
 }
