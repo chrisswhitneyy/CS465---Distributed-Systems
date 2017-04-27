@@ -26,10 +26,11 @@ public class LockManager {
     // synchronize this one because we want to remove all entries
     public synchronized void unLock(TransID trans) {
         Enumeration e = theLocks.elements();
-        while(e.hasMoreElements()){
-            Lock aLock = (Lock)(e.nextElement());
-            if(/* trans is a holder of this lock*/ ) aLock.release(trans);
-
+        while(e.hasMoreElements()) {
+            Lock aLock = (Lock) (e.nextElement());
+            if (/* trans is a holder of this lock*/){
+                aLock.release(trans);
+            }
         }
     }
 

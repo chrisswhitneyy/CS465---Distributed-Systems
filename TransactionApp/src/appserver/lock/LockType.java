@@ -1,7 +1,9 @@
 package appserver.lock;
 
-/**
- * Created by cdubs on 4/25/17.
- */
-public class LockType {
+
+public interface LockType {
+
+    public static int READ_LOCK = 1;
+    public static int WRITE_LOCK = 2;
+
 }

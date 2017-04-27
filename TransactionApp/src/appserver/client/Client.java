@@ -27,9 +27,9 @@ public class Client extends Thread implements MessageTypes{
         try {
             properties = new PropertyHandler(serverPropertiesFile);
             host = properties.getProperty("HOST");
-            System.out.println("[Client.FibClient] Host: " + host);
+            System.out.println("[Client] Host: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
-            System.out.println("[Client.FibClient] Port: " + port);
+            System.out.println("[Client] Port: " + port);
         } catch (Exception e) {
             System.err.println("[Client] Error: " + e);
             e.printStackTrace();
@@ -61,13 +61,7 @@ public class Client extends Thread implements MessageTypes{
             // connect to application server
             Socket server = new Socket(host, port);
             
-            // hard-coded string of class, aka tool name ... plus one argument
-            String classString = "appserver.job.impl.Fib";
-            Integer number = new Integer(this.number);
-            
-            // create job and job request message
-            Job job = new Job(classString, number);
-            Message message = new Message(JOB_REQUEST, job);
+            // open trans
             
             // sending job out to the application server in a message
             ObjectOutputStream writeToNet = new ObjectOutputStream(server.getOutputStream());
@@ -76,8 +70,7 @@ public class Client extends Thread implements MessageTypes{
             // reading result back in from application server
             // for simplicity, the result is not encapsulated in a message
             ObjectInputStream readFromNet = new ObjectInputStream(server.getInputStream());
-            Integer result = (Integer) readFromNet.readObject();
-            System.out.println("RESULT: " + result);
+            // display new balance
             
         } catch (Exception e) {
             System.err.println("[Client.run] Error: " + e);

@@ -6,7 +6,7 @@ package appserver.lock;
 public class Lock {
 
     private Object object; // the object being protected by the lock
-    private int TIDS; // the TIDs of current holders
+    private ArrayList<int> holders; // the TIDs of current holders
     private LockType lockType; // the current type
 
     public synchronized void acquire(TransID trans, LockType lockType ){
