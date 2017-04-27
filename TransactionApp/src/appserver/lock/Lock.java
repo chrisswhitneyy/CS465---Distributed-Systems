@@ -14,6 +14,7 @@ public class Lock {
         while(isConflict(trans,lockType) {
 
             try {
+                //
                 wait();
 
             } catch ( InterruptedException e){
@@ -34,6 +35,8 @@ public class Lock {
     public synchronized void release(TransID trans ){ holders.removeElement(trans);
         // remove this holder
         // set locktype to none
+        lockHolders.remove(transaction);
+
         notifyAll();
     }
 
@@ -42,18 +45,22 @@ public class Lock {
 
         if (lockholders.isEmpty()){
             // no conflict because no locks in holder
+            //log
             return false;
         }
         // holder list length 1 and lock holder has trans
-        else if (){
+        else if (lockHolders.size() == 1 && lockHolders.contains(transaction)){
+            //log
             return false;
         }
         // current lock type is read and new lock type is read
-        else if (){
+        else if (currentLockType == READ_LOCK && newLockType == READ_LOCK){
+            //log
             return false;
         }
         // everything is a conflict
         else {
+            //TODO
             return true;
         }
 
