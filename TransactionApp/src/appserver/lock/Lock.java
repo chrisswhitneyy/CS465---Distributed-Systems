@@ -27,6 +27,7 @@ public class Lock implements LockType {
 
     public synchronized void acquire(int TID, int lockType){
 
+
         while(isConflict(TID,lockType)){
             try { wait(); }
             catch ( InterruptedException e){/*...*/}

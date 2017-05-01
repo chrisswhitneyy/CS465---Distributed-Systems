@@ -19,7 +19,7 @@ public class DataManager {
     public DataManager() {
         accounts = new ArrayList<Integer>();
 
-        // intilize 10 accounts to $10;
+        // initialize 10 accounts to $10;
         for (int i = 0; i<=10; i++){
             accounts.set(i, 10);
         }

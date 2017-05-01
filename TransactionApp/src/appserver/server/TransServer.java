@@ -1,40 +1,39 @@
 package appserver.server;
 
-import appserver.comm.Message;
-import appserver.comm.MessageTypes;
 import appserver.data.DataManager;
 import appserver.lock.LockManager;
-import appserver.server.TransManager;
 import utils.PropertyHandler;
-
-
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
 
-
 /**
+ *  Class [TransServer] : Server that waits for connections and threads them out to the TransactionManger
  *
- * @author Dr.-Ing. Wolf-Dieter Otte
+ *  Author Christopher D. Whitney on May 1st, 2017
+ *
  */
 public class TransServer {
 
-    // Singleton objects - there is only one of them. For simplicity, this is not enforced though ...
-    static DataManager dataManager = new DataManager();
-    static LockManager lockManager = new LockManager();
-    static TransManager transManager = new TransMananger();
+    // Singleton objects
+    public static TransManager transManager;
+    public static DataManager dataManager;
+    public static LockManager lockManager;
 
-    static ServerSocket serverSocket = null;
+    // server socket
+    static ServerSocket serverSocket;
     
     // define server properties
-    private String host = null;
+    private String host;
     private int port;
     private Properties properties;
 
+    /**
+     * ClassConstructor
+     * @param serverPropertiesFile - Path to the server property file
+     */
     public TransServer(String serverPropertiesFile) {
         
         // read properties and create server socket
@@ -54,14 +53,14 @@ public class TransServer {
             e.printStackTrace();
         }
 
-        // create data manager
+        // create trans manager
+        transManager = new TransManager();
 
-        // intilize account ballances
+        // create data manager
+        dataManager = new DataManager();
 
         // create lock manager
-
-        // create trans manager
-
+        lockManager = new LockManager();
 
     }
 
@@ -69,10 +68,11 @@ public class TransServer {
     // start serving clients in server loop ...
     // server loop: infinitely loops and accepting clients
         while (true) {
-            System.out.println("[Server.run] Waiting to accept a request on port " + port + "... ");
+            System.out.println("[Server.run] Waiting to accept a client on port " + port + "... ");
             try{
-                // nesting of instantiation makes it impossible for race conditions
-                (new Thread(new ServerThread(serverSocket.accept()))).start();
+                // accept client socket and run transaction
+                Socket socket = serverSocket.accept();
+                transManager.runTrans(socket);
             }catch (IOException e) {
                 System.err.println("[Server] Error: " + e);
                 e.printStackTrace();
@@ -84,7 +84,7 @@ public class TransServer {
     // main()
     public static void main(String[] args) {
         // start the application server
-        TransServer transServer = null;
+        TransServer transServer;
         if(args.length == 1) {
             transServer = new TransServer(args[0]);
         } else {
