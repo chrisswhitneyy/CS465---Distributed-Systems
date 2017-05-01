@@ -37,7 +37,6 @@ public class Lock {
 
     }
 
-<<<<<<< HEAD
     public synchronized void release(int trans){
 
         lockHolders.removeElement(trans);
@@ -45,13 +44,10 @@ public class Lock {
         if (lockHolders.isEmpty()){
             currentLockType = EMPTY_LOCK;
         }
-=======
     public synchronized void release(TransID trans ){ holders.removeElement(trans);
         // remove this holder
         // set locktype to none
         lockHolders.remove(transaction);
->>>>>>> a7adaaf11ada3a424dc2f32994f01c0ae9bcc06f
-
         notifyAll();
     }
 
@@ -60,28 +56,23 @@ public class Lock {
         // checks to see the conditions when there is no conflicts
         if (lockHolders.isEmpty()){
             // no conflict because no locks in holder
-<<<<<<< HEAD
             // log
             return false;
         }
         // holder list length 1 and lock holder has trans
         else if (lockHolders.size() == 1 && lockHolders.contains(trans)){
-=======
             //log
             return false;
         }
         // holder list length 1 and lock holder has trans
         else if (lockHolders.size() == 1 && lockHolders.contains(transaction)){
             //log
->>>>>>> a7adaaf11ada3a424dc2f32994f01c0ae9bcc06f
             return false;
         }
         // current lock type is read and new lock type is read
         else if (currentLockType == READ_LOCK && newLockType == READ_LOCK){
-<<<<<<< HEAD
-=======
+
             //log
->>>>>>> a7adaaf11ada3a424dc2f32994f01c0ae9bcc06f
             return false;
         }
         // everything is a conflict
