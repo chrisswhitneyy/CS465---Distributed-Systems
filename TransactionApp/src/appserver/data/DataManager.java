@@ -27,6 +27,7 @@ public class DataManager implements LockType {
             tempAccount.setId(i);
             accounts.add(tempAccount);
         }
+        System.out.println("[DataManager].constructor  accounts initialized with $10.");
 
     }
 
@@ -42,6 +43,7 @@ public class DataManager implements LockType {
         Account account = accounts.get(accountID);
         int balance = account.getAmount();
         lockManager.unLock(TID);
+        System.out.println("[DataManager].read  TID " + TID + " readied account " + account.getId());
         return balance;
     }
 
@@ -57,6 +59,7 @@ public class DataManager implements LockType {
         Account account = accounts.get(accountID);
         account.setAmount(amount);
         lockManager.unLock(TID);
+        System.out.println("[DataManager].write  TID " + TID + " wrote $" + amount + " to " + account.getId());
     }
 
 }

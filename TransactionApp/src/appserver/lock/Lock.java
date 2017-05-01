@@ -27,7 +27,7 @@ public class Lock implements LockType {
      */
     public Lock(Object object){
         this.object = object;
-        holders = new ArrayList<>();
+        holders = new ArrayList<Integer>();
     }
 
     /**
@@ -61,6 +61,7 @@ public class Lock implements LockType {
             currentLockType = lockType;
             holders.add(TID);
         }
+        System.out.println("[Lock].acquire() TID:" + TID + " LockType" + lockType + ".");
 
     }
 
@@ -69,13 +70,14 @@ public class Lock implements LockType {
      * @param TID - transaction ID
      */
     public synchronized void release(int TID) {
-        // remove this holder
+
+        System.out.println("[Lock].release() TID " + TID + ".");
         holders.remove(TID);
 
-        if (holders.isEmpty()) {
-            // if no more holders set locktype to empty
+        if(holders.isEmpty()){
             currentLockType = EMPTY_LOCK;
         }
+
         notifyAll();
     }
 

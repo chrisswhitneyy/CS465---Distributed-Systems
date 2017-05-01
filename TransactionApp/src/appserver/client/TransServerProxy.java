@@ -2,6 +2,7 @@ package appserver.client;
 
 import appserver.comm.Message;
 import appserver.comm.MessageTypes;
+import appserver.comm.Params;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -20,15 +21,17 @@ public class TransServerProxy implements MessageTypes{
 
     private String host;
     private int port;
+    private Socket socket;
 
     /** Class constructor
      *
      * @param host - a string that contains the name for the server
      * @param port - a integer that contains the port for the server connection
      */
-    public TransServerProxy(String host, int port){
+    public TransServerProxy(String host, int port) throws IOException{
         this.host = host;
         this.port = port;
+        this.socket = new Socket(this.host,this.port);
     }
 
     /** openTrans : Opens transaction on the server
@@ -36,22 +39,21 @@ public class TransServerProxy implements MessageTypes{
      * @return TID - the id for the transaction that is opened
      * @throws IOException - thrown if object streams can't be opened
      */
-    public int openTrans() throws IOException{
-        int id = 0;
-
-        // create socket
-        Socket socket = new Socket(this.host,this.port);
+    public int openTrans() throws IOException,ClassNotFoundException{
+        int id;
 
         // setting up object streams
-        ObjectInputStream readFromNet = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream writeToNet = new ObjectOutputStream(socket.getOutputStream());
+        ObjectOutputStream writeToNet = new ObjectOutputStream(this.socket.getOutputStream());
+        ObjectInputStream readFromNet = new ObjectInputStream(this.socket.getInputStream());
 
         // create message with message type
         Message message = new Message();
         message.setType(OPEN_TRANS);
         // write object to stream
         writeToNet.writeObject(message); // send message
-        id = readFromNet.read(); // read balance back
+        id = (int) readFromNet.readObject(); // read TID back
+
+        System.out.println("[TransServerProxy].openTrans() trans # " + id + ".");
 
         return id; // return balance
     }
@@ -62,11 +64,8 @@ public class TransServerProxy implements MessageTypes{
      */
     public void closeTrans() throws IOException, ClassNotFoundException{
 
-        // create socket
-        Socket socket = new Socket(this.host,this.port);
-
         // setting up object streams
-        ObjectOutputStream writeToNet = new ObjectOutputStream(socket.getOutputStream());
+        ObjectOutputStream writeToNet = new ObjectOutputStream(this.socket.getOutputStream());
 
         // create message with message type
         Message message = new Message();
@@ -84,24 +83,28 @@ public class TransServerProxy implements MessageTypes{
      * @throws IOException - thrown if object streams can't be opened
      */
     public int read(int accountID) throws IOException, ClassNotFoundException{
+
+
+
         // initialize balance
         int balance = 0;
 
-        // create socket
-        Socket socket = new Socket(this.host,this.port);
-
         // setting up object streams
-        ObjectInputStream readFromNet = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream writeToNet = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream readFromNet = new ObjectInputStream(this.socket.getInputStream());
+        ObjectOutputStream writeToNet = new ObjectOutputStream(this.socket.getOutputStream());
 
         // create message with the accountID and message type
         Message message = new Message();
         message.setType(READ_REQUEST);
-        message.setContent(accountID);
+        Params param = new Params();
+        param.arg1 = accountID;
+        message.setContent(param);
 
         // write object to stream
         writeToNet.writeObject(message); // send message
-        balance = readFromNet.read(); // read balance back
+        balance = (int) readFromNet.readObject(); // read balance back
+
+        System.out.println("[TransServerProxy].read() Account" + accountID + ":" + balance + ".");
 
         return balance; // return balance
 
@@ -115,26 +118,26 @@ public class TransServerProxy implements MessageTypes{
      * @throws IOException - thrown if object streams can't be opened
      */
     public int write (int accountID, int amount) throws IOException, ClassNotFoundException{
+
+        System.out.println("[TransServerProxy].write() called.");
+
         // initialize variables
         int balance = 0;
         ArrayList<Integer> contnet = null;
 
-        // create object socket
-        Socket socket = new Socket(this.host,this.port);
-
         // setting up object streams
-        ObjectInputStream readFromNet = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream writeToNet = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream readFromNet = new ObjectInputStream(this.socket.getInputStream());
+        ObjectOutputStream writeToNet = new ObjectOutputStream(this.socket.getOutputStream());
 
-        // create content array with id and amount
-        contnet = new ArrayList<>(2);
-        contnet.add(accountID); // add id
-        contnet.add(amount); // add amount
+        // create params
+        Params param = new Params();
+        param.arg1 = accountID;
+        param.arg2 = amount;
 
         // create message with the content and message type
         Message message = new Message();
         message.setType(MessageTypes.WRITE_REQUEST);
-        message.setContent(contnet); // add content to message
+        message.setContent(param); // add content to message
 
         // write object to stream
         writeToNet.writeObject(message); // send message

@@ -44,7 +44,7 @@ public class LockManager implements LockType {
             // find lock associated with account
             lock = locks.get(account);
 
-            // if there isn't one, create it and add it to the hashtable
+            // if there isn't one, create it and add it to the hash table
             if (lock == null){
                 lock = new Lock (account);
                 locks.put(account,lock);
@@ -53,6 +53,8 @@ public class LockManager implements LockType {
 
             // acquire lock for TID
             lock.acquire(TID,lockType);
+            // log
+            System.out.println("[LockManager].setLock " + lockType + " set on TID " + TID + ".");
         }
     }
 
@@ -77,6 +79,8 @@ public class LockManager implements LockType {
             }
             iterator.remove(); // remove entry from iterator
         }
+        // log
+        System.out.println("[LockManager].unlock TID " + TID + " unlocked.");
     }
 
 }

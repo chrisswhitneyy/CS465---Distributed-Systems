@@ -15,7 +15,7 @@ import java.util.Properties;
  *  Author Christopher D. Whitney on May 1st, 2017
  *
  */
-public class TransServer {
+public class TransServer extends Thread{
 
     // Singleton objects
     public static TransManager transManager;
@@ -41,15 +41,15 @@ public class TransServer {
             // read server port from server properties file
             properties = new PropertyHandler(serverPropertiesFile);
             host = properties.getProperty("HOST");
-            System.out.println("[Server] Host: " + host);
+            System.out.println("[TransServer] Host: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
-            System.out.println("[Server] Port: " + port);
+            System.out.println("[TransServer] Port: " + port);
             
             // create server socket
             serverSocket = new ServerSocket(port);
         
         } catch (Exception e) {
-            System.err.println("[Server] Error: " + e);
+            System.err.println("[TransServer] Error: " + e);
             e.printStackTrace();
         }
 
@@ -68,13 +68,14 @@ public class TransServer {
     // start serving clients in server loop ...
     // server loop: infinitely loops and accepting clients
         while (true) {
-            System.out.println("[Server.run] Waiting to accept a client on port " + port + "... ");
+            System.out.println("[TransServer].run() Waiting to accept a client on port " + port + "... ");
             try{
                 // accept client socket and run transaction
-                Socket socket = serverSocket.accept();
-                transManager.runTrans(socket);
+                transManager.runTrans(serverSocket.accept());
+                System.out.println("[TransServer].run() Socket accepted.");
+
             }catch (IOException e) {
-                System.err.println("[Server] Error: " + e);
+                System.err.println("[TransServer].run() Error: " + e);
                 e.printStackTrace();
             }
         }
@@ -90,6 +91,6 @@ public class TransServer {
         } else {
             transServer = new TransServer("../../../config/Server.properties");
         }
-        transServer.run();
+        transServer.start();
     }
 }

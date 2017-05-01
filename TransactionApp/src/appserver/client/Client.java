@@ -40,12 +40,13 @@ public class Client extends Thread{
 
     @Override
     public void run() {
-        try { 
+        try {
             
             TransServerProxy transServerProxy = new TransServerProxy(host,port);
 
             int transID = transServerProxy.openTrans();
-            System.out.println(" trans #" + transID + " opened.");
+
+            System.out.println("[Client].run() Trans #" + transID + " opened.");
 
             // randomly selected account number
             int withdrawnAccount = (int) Math.floor( Math.random() * numberOfAccounts);
@@ -64,20 +65,24 @@ public class Client extends Thread{
             // write back amount after deposit
             int amountToRemain = transServerProxy.write(depositedAccount, accountTo + transferAmount );
 
-            System.out.println("[Client.run] Account " + amountFrom + " deposited " + transferAmount + " to " + accountTo );
-            System.out.println("[Client.run] " + amountFrom + " = $" + amountFromRemain + "," + accountTo + " =$" + amountToRemain);
+            System.out.println("[Client].run() Account " + amountFrom + " deposited $" + transferAmount + " to account " + accountTo );
+            System.out.println("[Client].run() " + amountFrom + " = $" + amountFromRemain + "," + accountTo + " =$" + amountToRemain);
+
+            transServerProxy.closeTrans();
 
         } catch (Exception e) {
-            System.err.println("[Client.run] Error: " + e);
+            System.err.println("[Client].run() Error: " + e);
             e.printStackTrace();
         }
     }
     
     public static void main(String[] args) {
+        System.out.println("[Client].main()");
         // threads out clients
-        for (int i=10;i>0;i--){
-          (new appserver.client.Client("../../../config/Server.properties")).start();
-        }
+        //for (int i=0;i<=10;i++){
+            Client client = new Client("../../../config/Server.properties");
+            client.start();
+        //}
         
     }  
 }
