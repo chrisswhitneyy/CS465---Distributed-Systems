@@ -49,8 +49,11 @@ public class Client extends Thread{
             System.out.println("[Client].run() Trans #" + transID + " opened.");
 
             // randomly selected account number
-            int withdrawnAccount = (int) Math.floor( Math.random() * numberOfAccounts);
-            int depositedAccount = (int) Math.floor( Math.random() * numberOfAccounts);
+            //int withdrawnAccount = (int) Math.floor( Math.random() * numberOfAccounts);
+            //int depositedAccount = (int) Math.floor( Math.random() * numberOfAccounts);
+
+            int withdrawnAccount = 2;
+            int depositedAccount = 1;
 
             // randomly select amount to transfer
             int transferAmount = (int) Math.floor( Math.random());
@@ -65,9 +68,11 @@ public class Client extends Thread{
             // write back amount after deposit
             int amountToRemain = transServerProxy.write(depositedAccount, accountTo + transferAmount );
 
+            // log
             System.out.println("[Client].run() Account " + amountFrom + " deposited $" + transferAmount + " to account " + accountTo );
             System.out.println("[Client].run() " + amountFrom + " = $" + amountFromRemain + "," + accountTo + " =$" + amountToRemain);
 
+            // close transaction 
             transServerProxy.closeTrans();
 
         } catch (Exception e) {

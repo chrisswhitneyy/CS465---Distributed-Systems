@@ -53,13 +53,16 @@ public class DataManager implements LockType {
      * @param accountID - ID of the account to read
      * @param TID - ID of the transaction that wishes to read the account
      * @param amount - Amount to write to the account
+     * @return balance - returns new balance on account
+     *
      */
-    public void write(int accountID,int TID, int amount){
+    public int write(int accountID,int TID, int amount){
         lockManager.setLock(accounts.get(accountID),TID,WRITE_LOCK);
         Account account = accounts.get(accountID);
         account.setAmount(amount);
         lockManager.unLock(TID);
         System.out.println("[DataManager].write  TID " + TID + " wrote $" + amount + " to " + account.getId());
+        return account.getAmount();
     }
 
 }

@@ -104,7 +104,7 @@ public class TransServerProxy implements MessageTypes{
         writeToNet.writeObject(message); // send message
         balance = (int) readFromNet.readObject(); // read balance back
 
-        System.out.println("[TransServerProxy].read() Account" + accountID + ":" + balance + ".");
+        System.out.println("[TransServerProxy].read() Account" + accountID + ": $" + balance + ".");
 
         return balance; // return balance
 
@@ -122,8 +122,7 @@ public class TransServerProxy implements MessageTypes{
         System.out.println("[TransServerProxy].write() called.");
 
         // initialize variables
-        int balance = 0;
-        ArrayList<Integer> contnet = null;
+        int balance;
 
         // setting up object streams
         ObjectInputStream readFromNet = new ObjectInputStream(this.socket.getInputStream());
@@ -136,12 +135,12 @@ public class TransServerProxy implements MessageTypes{
 
         // create message with the content and message type
         Message message = new Message();
-        message.setType(MessageTypes.WRITE_REQUEST);
+        message.setType(WRITE_REQUEST);
         message.setContent(param); // add content to message
 
         // write object to stream
         writeToNet.writeObject(message); // send message
-        balance = readFromNet.read(); // read balance back
+        balance = (int) readFromNet.readObject(); // read balance back
 
         return balance; // return balance
 

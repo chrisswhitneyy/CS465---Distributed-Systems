@@ -111,7 +111,8 @@ public class TransManager {
                         case WRITE_REQUEST:
                             toAccountID = (int) params.arg1;
                             amount = (int) params.arg2;
-                            TransServer.dataManager.write(toAccountID,TID,amount);
+                            balance = TransServer.dataManager.write(toAccountID,TID,amount);
+                            writeToNet.writeObject(balance);
                             System.out.println("[TransManager][Trans].run() WRITE_REQUEST to account " + toAccountID + ": $" + amount + ".");
                             break;
 
