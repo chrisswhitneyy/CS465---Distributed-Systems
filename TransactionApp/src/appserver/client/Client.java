@@ -1,12 +1,6 @@
 package appserver.client;
 
-import appserver.comm.Message;
-import appserver.comm.MessageTypes;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.Properties;
-
 import utils.PropertyHandler;
 
 /**
@@ -14,13 +8,12 @@ import utils.PropertyHandler;
  *
  * @author Christopher D. Whitney 
  */
-public class Client extends Thread implements MessageTypes{
-    
-    private String host;
-    private int port;
+public class Client extends Thread{
 
     private Properties properties;
-    private Integer number;
+    private String host;
+    private int port;
+    private  int numberOfAccounts;
 
     public Client(String serverPropertiesFile) {
         try {
@@ -29,6 +22,8 @@ public class Client extends Thread implements MessageTypes{
             System.out.println("[Client] Host: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
             System.out.println("[Client] Port: " + port);
+            numberOfAccounts = Integer.parseInt(properties.getProperty("NUMBER_OF_ACCOUNT"));
+
         } catch (Exception e) {
             System.err.println("[Client] Error: " + e);
             e.printStackTrace();
@@ -59,10 +54,11 @@ public class Client extends Thread implements MessageTypes{
 
             // reads from account which is be deposited in
             int accountTo = transServerProxy.read(depositedAccount);
-            // write back amount after deposite
+            // write back amount after deposit
             int amountToRemain = transServerProxy.write(depositedAccount, accountTo + transferAmount );
 
-
+            System.out.println("[Client.run] Account " + amountFrom + " deposited " + transferAmount + " to " + accountTo );
+            System.out.println("[Client.run] " + amountFrom + " = $" + amountFromRemain + "," + accountTo + " =$" + amountToRemain);
 
         } catch (Exception e) {
             System.err.println("[Client.run] Error: " + e);
@@ -74,8 +70,8 @@ public class Client extends Thread implements MessageTypes{
         
         /* Threads out the FibClient on numbers = 46,45.....0 to calculate 
             the fibonacci number */ 
-        for (int i=46;i>0;i--){
-          (new appserver.client.Client("../../config/Server.properties",i)).start();
+        for (int i=10;i>0;i--){
+          (new appserver.client.Client("../../config/Server.properties")).start();
         }
         
     }  
