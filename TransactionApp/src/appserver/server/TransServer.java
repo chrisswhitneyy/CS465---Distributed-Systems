@@ -88,7 +88,7 @@ public class TransServer {
         if(args.length == 1) {
             transServer = new TransServer(args[0]);
         } else {
-            transServer = new TransServer("../../config/Server.properties");
+            transServer = new TransServer("../../../config/Server.properties");
         }
         transServer.run();
     }

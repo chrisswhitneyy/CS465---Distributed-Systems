@@ -76,7 +76,7 @@ public class Client extends Thread{
     public static void main(String[] args) {
         // threads out clients
         for (int i=10;i>0;i--){
-          (new appserver.client.Client("../../config/Server.properties")).start();
+          (new appserver.client.Client("../../../config/Server.properties")).start();
         }
         
     }  
