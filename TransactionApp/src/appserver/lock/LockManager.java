@@ -3,21 +3,28 @@ package appserver.lock;
 /**
  * Created by cdubs on 4/20/17.
  */
-public class LockManager {
+public class LockManager implements LockType {
 
-    private Hashtable theLocks;
+    private HashMap<Account, Lock> locks;
 
     public LockManager(){
-        locks = new Lock();
+        locks = new HashMap();
     }
 
-    public void setLock(Object object, TransID trans, LockType lockType){
+    public void setLock(Account account, TransID trans, LockType lockType){
 
-        Lock foundLock;
+        Lock lock;
 
         synchronized(this){
-            // find the lock associated with object
-            // if there isn’t one, create it and add it to the hashtable
+
+            lock = locks.get(account);
+
+            if (lock == null){
+                lock = new Lock (account);
+                locks.put(account,lock);
+                transaction.log(" [LockManager].setLock ");
+            }
+            lock.acquire(tans,lockType);
         }
 
         foundLock.acquire(trans, lockType);
@@ -25,13 +32,7 @@ public class LockManager {
 
     // synchronize this one because we want to remove all entries
     public synchronized void unLock(TransID trans) {
-        Enumeration e = theLocks.elements();
-        while(e.hasMoreElements()) {
-            Lock aLock = (Lock) (e.nextElement());
-            if (/* trans is a holder of this lock*/){
-                aLock.release(trans);
-            }
-        }
+        // iternates through all the locks and releases them
     }
 
 

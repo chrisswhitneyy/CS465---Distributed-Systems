@@ -10,20 +10,19 @@ import java.util.Properties;
 import utils.PropertyHandler;
 
 /**
- * Class [FibClient] A FibClient client that uses the Fib tool and the passed
- * server connectivity information to request a Fib job on number = 46,45,...,0
- * 
+ *
+ *
  * @author Christopher D. Whitney 
  */
 public class Client extends Thread implements MessageTypes{
     
-    String host = null;
-    int port;
+    private String host;
+    private int port;
 
-    Properties properties;
-    Integer number;
+    private Properties properties;
+    private Integer number;
 
-    public Client(String serverPropertiesFile, Integer number) {
+    public Client(String serverPropertiesFile) {
         try {
             properties = new PropertyHandler(serverPropertiesFile);
             host = properties.getProperty("HOST");
@@ -34,44 +33,37 @@ public class Client extends Thread implements MessageTypes{
             System.err.println("[Client] Error: " + e);
             e.printStackTrace();
         }
-        this.number = number;
     }
 
-    public int openTrans(){
-        int id = 0;
-        return id;
-    }
-    public boolean closeTrans(){
-        boolean flag = false;
-        return flag;
 
-    }
-    public Message read(){
-        Message message;
-        return message;
-    }
-    public boolean write (Message message){
-        boolean flag = false;
-        return  false;
-    }
     @Override
     public void run() {
         try { 
             
-            // connect to application server
-            Socket server = new Socket(host, port);
-            
-            // open trans
-            
-            // sending job out to the application server in a message
-            ObjectOutputStream writeToNet = new ObjectOutputStream(server.getOutputStream());
-            writeToNet.writeObject(message);
-            
-            // reading result back in from application server
-            // for simplicity, the result is not encapsulated in a message
-            ObjectInputStream readFromNet = new ObjectInputStream(server.getInputStream());
-            // display new balance
-            
+            TransServerProxy transServerProxy = new TransServerProxy(host,port);
+
+            int transID = transServerProxy.openTrans();
+            System.out.println(" trans #" + transID + " opened.");
+
+            // randomly selected account number
+            int withdrawnAccount = (int) Math.floor( Math.random() * numberOfAccounts);
+            int depositedAccount = (int) Math.floor( Math.random() * numberOfAccounts);
+
+            // randomly select amount to transfer
+            int transferAmount = (int) Math.floor( Math.random());
+
+            // reads from account which is be withdrawn from
+            int amountFrom = transServerProxy.read(withdrawnAccount);
+            // write back account amount after withdraw
+            int amountFromRemain = transServerProxy.write(withdrawnAccount, amountFrom - transferAmount);
+
+            // reads from account which is be deposited in
+            int accountTo = transServerProxy.read(depositedAccount);
+            // write back amount after deposite
+            int amountToRemain = transServerProxy.write(depositedAccount, accountTo + transferAmount );
+
+
+
         } catch (Exception e) {
             System.err.println("[Client.run] Error: " + e);
             e.printStackTrace();
