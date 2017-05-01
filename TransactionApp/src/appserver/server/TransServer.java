@@ -1,6 +1,7 @@
 package appserver.server;
 
 import appserver.comm.Message;
+import appserver.comm.MessageTypes;
 import appserver.data.DataManager;
 import appserver.lock.LockManager;
 import appserver.server.TransManager;
@@ -79,46 +80,6 @@ public class TransServer {
         }
     }
 
-    // objects of this helper class communicate with clients
-    private class ServerThread extends Thread {
-
-        Socket client = null;
-        ObjectInputStream readFromNet = null;
-        ObjectOutputStream writeToNet = null;
-        Message message = null;
-
-        private ServerThread(Socket client) {
-            this.client = client;
-        }
-
-        @Override
-        public void run() {
-            // set up objects streams and message message
-            try {
-                // setting up object streams
-                readFromNet = new ObjectInputStream(client.getInputStream());
-                writeToNet = new ObjectOutputStream(client.getOutputStream());
-                
-                // reading message
-                message = (Message) readFromNet.readObject();
-            } catch (Exception e) {
-                System.err.println("[ServerThread.run] Message could not be read from object stream.");
-                e.printStackTrace();
-                System.exit(1);
-            }
-
-            // processing message
-            switch (message.getType()) {
-                case REGISTER_SATELLITE:
-
-                case JOB_REQUEST:
-
-
-                default:
-                    System.err.println("[TransServerThread.run] Warning: Message type not implemented");
-            }
-        }
-    }
 
     // main()
     public static void main(String[] args) {

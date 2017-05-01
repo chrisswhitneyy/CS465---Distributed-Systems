@@ -8,25 +8,21 @@ public class Account {
     private int id;
     private int amount;
 
-    public Account(){
-        self.id = null;
-        self.amount = null;
-    }
+    public Account(){}
+
     public Account(int id, int amount){
-        self.id = id;
-        self.amount = amount;
+        this.id = id;
+        this.amount = amount;
     }
     public int getId(){
-        return self.id;
+        return this.id;
     }
     public void setId(int id){
-        self.id = id;
+        this.id = id;
     }
     public int getAmount(){
-        return self.amount;
+        return this.amount;
     }
-    public void setAmount(int amount){
-        self.amount = amount;
-    }
+    public void setAmount(int amount){ this.amount = amount;}
 
 }

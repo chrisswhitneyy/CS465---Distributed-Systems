@@ -7,7 +7,7 @@ package appserver.data;
 
 import java.util.ArrayList;
 
-/** Class [DataManager] : Class that is incharge of handling the accounts.
+/** Class [DataManager] : Class that is in charge of handling the accounts.
  *
  * @author Christopher D. Whitney
  */
@@ -15,16 +15,22 @@ public class DataManager {
 
     static ArrayList accounts = null;
 
+
     public DataManager() {
         accounts = new ArrayList<Integer>();
+
+        // intilize 10 accounts to $10;
+        for (int i = 0; i<=10; i++){
+            accounts.set(i, 10);
+        }
+
     }
 
     public Integer read(int id){
-
         return (Integer) accounts.get(id-1);
     }
 
-    public boolean write(int id, Integer amount){
+    public void write(int id, Integer amount){
 
     }
 

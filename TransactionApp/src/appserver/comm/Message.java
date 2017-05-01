@@ -24,7 +24,7 @@ public class Message implements MessageTypes, Serializable {
     public Message() {
     }
 
-// getter and setter methods for message type
+    // getter and setter methods for message type
     public void setType(int type) {
         this.type = type;
     }
