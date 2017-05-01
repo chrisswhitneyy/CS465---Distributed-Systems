@@ -7,22 +7,16 @@ import java.io.Serializable;
  * Instances of this class can be sent over a network, using object streams.
  * Message types are defined in MessageTypes
  *
- * @author Dr.-Ing. Wolf-Dieter Otte
+ * Author Christopher D. whitney on April 28th, 2017
  */
 public class Message implements MessageTypes, Serializable {
 
     // contains the type of message, types are defined in interface MessageTypes
-    int type;
+    private int type;
     // contains the content that is specific to a certain message type
-    Object content;
+    private Object content;
 
-    public Message(int type, Object content) {
-        this.type = type;
-        this.content = content;
-    }
-
-    public Message() {
-    }
+    public Message() {}
 
     // getter and setter methods for message type
     public void setType(int type) {

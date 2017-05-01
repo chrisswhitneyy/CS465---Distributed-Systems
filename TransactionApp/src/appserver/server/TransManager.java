@@ -3,16 +3,13 @@ package appserver.server;
 import appserver.comm.Message;
 import appserver.comm.MessageTypes;
 import appserver.lock.Lock;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
+ * Class [TransManager] : Manages all of the transactions and contains the transaction  as an inner class
  *
  * Author Christopher D. Whitney on May 1st, 2017
  *
@@ -47,7 +44,6 @@ public class TransManager {
      * Author: Christopher D. Whitney on May 1st, 2017
      *
      **/
-
     private class Trans extends Thread implements MessageTypes{
 
         private ArrayList <Lock> locks;
@@ -99,12 +95,12 @@ public class TransManager {
 
                         case READ_REQUEST:
                             fromAccountID = params.get(0);
-                            TransServer.dataManager.read(fromAccountID);
+                            TransServer.dataManager.read(fromAccountID,TID);
 
                         case WRITE_REQUEST:
                             toAccountID = params.get(0);
                             amount = params.get(1);
-                            TransServer.dataManager.write(toAccountID,amount);
+                            TransServer.dataManager.write(toAccountID,TID,amount);
 
                         default:
                             System.err.println("[Trans.run] Warning: Message type not implemented");

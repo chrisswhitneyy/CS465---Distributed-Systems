@@ -5,8 +5,11 @@ import utils.PropertyHandler;
 
 /**
  *
+ * Class [Client] : Instances of client are threaded in main. The thread uses the TransServerProxy class to transform
+ * this classes high level calls to low level network calls.
  *
- * @author Christopher D. Whitney 
+ * Author: Christopher D. Whitney on May 1st, 2017
+ *
  */
 public class Client extends Thread{
 
@@ -15,6 +18,10 @@ public class Client extends Thread{
     private int port;
     private  int numberOfAccounts;
 
+    /**
+     * ClassConstructor
+     * @param serverPropertiesFile - String to the path for the property file
+     */
     public Client(String serverPropertiesFile) {
         try {
             properties = new PropertyHandler(serverPropertiesFile);
@@ -67,9 +74,7 @@ public class Client extends Thread{
     }
     
     public static void main(String[] args) {
-        
-        /* Threads out the FibClient on numbers = 46,45.....0 to calculate 
-            the fibonacci number */ 
+        // threads out clients
         for (int i=10;i>0;i--){
           (new appserver.client.Client("../../config/Server.properties")).start();
         }

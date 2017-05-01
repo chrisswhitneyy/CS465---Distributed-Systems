@@ -1,11 +1,14 @@
 package appserver.lock;
 
 import appserver.data.Account;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  *
- * Class [LockManager] :
+ * Class [LockManager] : Handles and manages all of the lock. Using this class one can set a lock on an object and
+ * unlock that same object.
  *
  * Note: Code is adapted from Distributed Systems Concept and Design 5th Edition by George Coulouris
  *
@@ -59,8 +62,21 @@ public class LockManager implements LockType {
      * @param TID - Transaction ID
      */
     public synchronized void unLock(int TID) {
-        // iternates through all the locks and releases them
-    }
 
+        Lock tempLock; // temp lock for iterations
+        ArrayList<Integer> TIDs; // list of TIDs in a lock
+
+        // iterates through all the locks and release the locks that contain TID
+        Iterator iterator = locks.entrySet().iterator();
+        while (iterator.hasNext()){
+            tempLock = (Lock) ((HashMap.Entry) iterator.next()).getValue(); // get locks from hash map
+            TIDs = tempLock.getTIDsHolders(); // get TIDs held by the lock
+            if ( TIDs.contains(TID) ){
+                // trans is a holder of this lock
+                tempLock.release(TID); // release TID
+            }
+            iterator.remove(); // remove entry from iterator
+        }
+    }
 
 }

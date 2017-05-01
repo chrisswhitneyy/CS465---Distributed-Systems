@@ -1,7 +1,10 @@
 package appserver.data;
 
 /**
- * Created by cdubs on 4/27/17.
+ * Class [Account] : Instances of this class are used to create account objects
+ *
+ * Author: Christopher D. Whitney on April 29th, 2017
+ *
  */
 public class Account {
 
@@ -9,11 +12,6 @@ public class Account {
     private int amount;
 
     public Account(){}
-
-    public Account(int id, int amount){
-        this.id = id;
-        this.amount = amount;
-    }
     public int getId(){
         return this.id;
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * down to lower level network calls. It uses object streams to communicate to the server, these object streams pass a
  * message object to server where the parameters are stored as the content of that message.
  *
- * @Author Christopher D. Whitney on May 1st, 2017
+ * Author: Christopher D. Whitney on May 1st, 2017
  *
  */
 public class TransServerProxy implements MessageTypes{
