@@ -49,17 +49,14 @@ public class Lock implements LockType {
             holders.add(TID);
             currentLockType = lockType;
 
-        } else if (currentLockType == lockType) {
+        } else if (!holders.isEmpty()) {
             // if another transaction holds the lock, share it.
             if (!holders.contains(TID)){
                 holders.add(TID);
             }
-        } else if ( holders.contains(TID) ){
-            // if transaction is a holder but needs a more exclusive lock
-            if (currentLockType == READ_LOCK){
-                lockType = WRITE_LOCK;
-            }
-            holders.add(TID);
+            currentLockType = lockType;
+
+        } else if ( holders.indexOf(TID) != -1 && currentLockType == READ_LOCK && lockType == WRITE_LOCK ){
             currentLockType = lockType;
         }
 
@@ -75,7 +72,9 @@ public class Lock implements LockType {
 
         holders.remove(holders.indexOf(TID));
 
-        currentLockType = EMPTY_LOCK;
+        if (holders.isEmpty()){
+            currentLockType = EMPTY_LOCK;
+        }
 
         notifyAll();
 

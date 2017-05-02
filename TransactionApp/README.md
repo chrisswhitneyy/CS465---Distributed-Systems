@@ -5,7 +5,7 @@ Navigate to the output 'appserver' folder after build. Properties are hardcoded 
 specific path can also be passed.
 
 ## Server:
-java appserver.server.TransSever <optional property file path>
+java appserver.server.TransServer <optional property file path>
 
 ## Clients:
 java appserver.client.Client <optional property file path>
