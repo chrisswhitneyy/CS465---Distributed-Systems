@@ -66,7 +66,7 @@ public class TransManager {
         }
 
         @Override
-        public void run(){
+        public void run() {
             System.out.println("[TransManager][Trans].run() called.");
 
             while(true){
@@ -99,8 +99,7 @@ public class TransManager {
                             transactions.remove(this);
                             transCounter--;
                             System.out.println("[TransManager][Trans].run() CLOSE_TRANS "+ TID +".");
-                            break;
-
+                            return;
                         case READ_REQUEST:
                             fromAccountID = (int) params.arg1;
                             balance = TransServer.dataManager.read(fromAccountID,TID);
@@ -115,7 +114,10 @@ public class TransManager {
                             writeToNet.writeObject(balance);
                             System.out.println("[TransManager][Trans].run() WRITE_REQUEST to account " + toAccountID + ": $" + amount + ".");
                             break;
-
+                        case ACCOUNT_TOTAL_REQUEST:
+                            balance = TransServer.dataManager.getAllAccountTotal();
+                            writeToNet.writeObject(balance);
+                            System.out.println("[TransManager][Trans].run() ACCOUNT_TOTAL_REQUEST " + balance);
                         default:
                             System.err.println("[TransManager][Trans].run() Warning: Message type not implemented");
                     }

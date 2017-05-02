@@ -84,8 +84,6 @@ public class TransServerProxy implements MessageTypes{
      */
     public int read(int accountID) throws IOException, ClassNotFoundException{
 
-
-
         // initialize balance
         int balance = 0;
 
@@ -119,8 +117,6 @@ public class TransServerProxy implements MessageTypes{
      */
     public int write (int accountID, int amount) throws IOException, ClassNotFoundException{
 
-        System.out.println("[TransServerProxy].write() called.");
-
         // initialize variables
         int balance;
 
@@ -141,6 +137,30 @@ public class TransServerProxy implements MessageTypes{
         // write object to stream
         writeToNet.writeObject(message); // send message
         balance = (int) readFromNet.readObject(); // read balance back
+
+        System.out.println("[TransServerProxy].write() $" + amount + " written to account " + accountID);
+
+        return balance; // return balance
+
+    }
+
+    public int getAllAcountTotal() throws IOException, ClassNotFoundException{
+        // initialize variables
+        int balance;
+
+        // setting up object streams
+        ObjectInputStream readFromNet = new ObjectInputStream(this.socket.getInputStream());
+        ObjectOutputStream writeToNet = new ObjectOutputStream(this.socket.getOutputStream());
+
+        // create message with the content and message type
+        Message message = new Message();
+        message.setType(ACCOUNT_TOTAL_REQUEST);
+
+        // write object to stream
+        writeToNet.writeObject(message); // send message
+        balance = (int) readFromNet.readObject(); // read balance back
+
+        System.out.println("[TransServerProxy].getAllAcountTotal() $" + balance);
 
         return balance; // return balance
 

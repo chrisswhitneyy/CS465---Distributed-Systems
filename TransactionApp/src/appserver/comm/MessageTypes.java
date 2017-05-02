@@ -12,4 +12,5 @@ public interface MessageTypes {
     int CLOSE_TRANS = 2;
     int READ_REQUEST = 3;
     int WRITE_REQUEST = 4;
+    int ACCOUNT_TOTAL_REQUEST = 5;
 }

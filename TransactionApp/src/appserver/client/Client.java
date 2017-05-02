@@ -46,17 +46,17 @@ public class Client extends Thread{
 
             int transID = transServerProxy.openTrans();
 
+            // all account total
+            transServerProxy.getAllAcountTotal();
+
             System.out.println("[Client].run() Trans #" + transID + " opened.");
 
             // randomly selected account number
-            //int withdrawnAccount = (int) Math.floor( Math.random() * numberOfAccounts);
-            //int depositedAccount = (int) Math.floor( Math.random() * numberOfAccounts);
-
-            int withdrawnAccount = 2;
-            int depositedAccount = 1;
+            int withdrawnAccount = (int) Math.floor( Math.random() * numberOfAccounts);
+            int depositedAccount = (int) Math.floor( Math.random() * numberOfAccounts);
 
             // randomly select amount to transfer
-            int transferAmount = (int) Math.floor( Math.random());
+            int transferAmount = (int) Math.floor( Math.random() * 10 );
 
             // reads from account which is be withdrawn from
             int amountFrom = transServerProxy.read(withdrawnAccount);
@@ -68,26 +68,29 @@ public class Client extends Thread{
             // write back amount after deposit
             int amountToRemain = transServerProxy.write(depositedAccount, accountTo + transferAmount );
 
-            // log
-            System.out.println("[Client].run() Account " + amountFrom + " deposited $" + transferAmount + " to account " + accountTo );
-            System.out.println("[Client].run() " + amountFrom + " = $" + amountFromRemain + "," + accountTo + " =$" + amountToRemain);
 
-            // close transaction 
+            // display
+            System.out.println("[Client].run() Account " + withdrawnAccount + " deposited $" + transferAmount + " to account " + depositedAccount );
+            System.out.println("[Client].run() " + withdrawnAccount + " = $" + amountFromRemain + "," + depositedAccount + " =$" + amountToRemain);
+
+            // all account total
+            transServerProxy.getAllAcountTotal();
+
+            // close transaction
             transServerProxy.closeTrans();
 
-        } catch (Exception e) {
+        }catch (Exception e) {
             System.err.println("[Client].run() Error: " + e);
             e.printStackTrace();
         }
     }
     
     public static void main(String[] args) {
-        System.out.println("[Client].main()");
         // threads out clients
-        //for (int i=0;i<=10;i++){
+        for (int i=0;i<=3;i++){
             Client client = new Client("../../../config/Server.properties");
             client.start();
-        //}
+        }
         
     }  
 }

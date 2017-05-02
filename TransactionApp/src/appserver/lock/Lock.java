@@ -49,18 +49,20 @@ public class Lock implements LockType {
             holders.add(TID);
             currentLockType = lockType;
 
-        } else if (!holders.isEmpty()) {
+        } else if (currentLockType == lockType) {
             // if another transaction holds the lock, share it.
             if (!holders.contains(TID)){
                 holders.add(TID);
             }
-
-        } else if (holders.contains(TID) && lockType == READ_LOCK){
-            // this transaction is a holder but needs a more exclusive lock
-            lockType = WRITE_LOCK;
-            currentLockType = lockType;
+        } else if ( holders.contains(TID) ){
+            // if transaction is a holder but needs a more exclusive lock
+            if (currentLockType == READ_LOCK){
+                lockType = WRITE_LOCK;
+            }
             holders.add(TID);
+            currentLockType = lockType;
         }
+
         System.out.println("[Lock].acquire() TID:" + TID + " LockType" + lockType + ".");
 
     }
@@ -71,14 +73,13 @@ public class Lock implements LockType {
      */
     public synchronized void release(int TID) {
 
-        System.out.println("[Lock].release() TID " + TID + ".");
-        holders.remove(TID);
+        holders.remove(holders.indexOf(TID));
 
-        if(holders.isEmpty()){
-            currentLockType = EMPTY_LOCK;
-        }
+        currentLockType = EMPTY_LOCK;
 
         notifyAll();
+
+        System.out.println("[Lock].release() TID " + TID + ".");
     }
 
     /**
@@ -94,11 +95,6 @@ public class Lock implements LockType {
         if (holders.isEmpty()){
             // no conflict because no locks in holder
             // log
-            return false;
-        }
-        // holder list length 1 and lock holder has trans
-        else if (holders.size() == 1 && holders.contains(TID)){
-            //log
             return false;
         }
         // holder list length 1 and lock holder has trans

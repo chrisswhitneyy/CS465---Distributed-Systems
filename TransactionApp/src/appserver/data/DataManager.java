@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class DataManager implements LockType {
 
-    static ArrayList<Account> accounts;
-    static LockManager lockManager;
+    static private ArrayList<Account> accounts;
+    static private LockManager lockManager;
 
     /**
      * ClassConstructor
@@ -21,18 +21,18 @@ public class DataManager implements LockType {
         lockManager = new LockManager();
 
         // initialize 10 accounts to $10 and add to account list
-        for (int i = 0; i<=10; i++) {
+        for (int i = 0; i<10; i++) {
             Account tempAccount = new Account();
             tempAccount.setAmount(10);
             tempAccount.setId(i);
             accounts.add(tempAccount);
         }
-        System.out.println("[DataManager].constructor  accounts initialized with $10.");
+        System.out.println("[DataManager].constructor()  accounts initialized with $10.");
 
     }
 
     /**
-     * read - Reads the given account
+     * read - reads the given account
      *
      * @param accountID - ID of the account to read
      * @param TID - ID of the transaction that wishes to read the account
@@ -43,7 +43,7 @@ public class DataManager implements LockType {
         Account account = accounts.get(accountID);
         int balance = account.getAmount();
         lockManager.unLock(TID);
-        System.out.println("[DataManager].read  TID " + TID + " readied account " + account.getId());
+        System.out.println("[DataManager].read()  TID " + TID + " readied account " + account.getId());
         return balance;
     }
 
@@ -61,8 +61,20 @@ public class DataManager implements LockType {
         Account account = accounts.get(accountID);
         account.setAmount(amount);
         lockManager.unLock(TID);
-        System.out.println("[DataManager].write  TID " + TID + " wrote $" + amount + " to " + account.getId());
+        System.out.println("[DataManager].write()  TID " + TID + " wrote $" + amount + " to " + account.getId());
         return account.getAmount();
+    }
+
+    /**
+     * getAllAccountTotal - sums all of the accounts balances
+     * @return total - sum of all the accounts
+     */
+    public int getAllAccountTotal(){
+        int total = 0;
+        for (int i=0; i<accounts.size(); i++){
+            total += accounts.get(i).getAmount();
+        }
+        return total;
     }
 
 }

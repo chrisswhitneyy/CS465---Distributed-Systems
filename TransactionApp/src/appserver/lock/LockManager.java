@@ -44,6 +44,7 @@ public class LockManager implements LockType {
             // find lock associated with account
             lock = locks.get(account);
 
+
             // if there isn't one, create it and add it to the hash table
             if (lock == null){
                 lock = new Lock (account);
