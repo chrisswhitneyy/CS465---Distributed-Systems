@@ -3,7 +3,6 @@ package appserver.server;
 import appserver.comm.Message;
 import appserver.comm.MessageTypes;
 import appserver.comm.Params;
-import appserver.lock.Lock;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
