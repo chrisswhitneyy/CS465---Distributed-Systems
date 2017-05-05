@@ -1,6 +1,6 @@
 package appserver.data;
 
-import appserver.lock.LockManager;
+import appserver.server.TransServer;
 import appserver.lock.LockType;
 import java.util.ArrayList;
 
@@ -11,14 +11,12 @@ import java.util.ArrayList;
 public class DataManager implements LockType {
 
     static private ArrayList<Account> accounts;
-    static private LockManager lockManager;
 
     /**
      * ClassConstructor
      */
     public DataManager() {
         accounts = new ArrayList<>();
-        lockManager = new LockManager();
 
         // initialize 10 accounts to $10 and add to account list
         for (int i = 0; i<10; i++) {
@@ -39,10 +37,9 @@ public class DataManager implements LockType {
      * @return balance - amount on the account
      */
     public int read(int accountID,int TID){
-        lockManager.setLock(accounts.get(accountID),TID,READ_LOCK);
+        TransServer.lockManager.setLock(accounts.get(accountID),TID,READ_LOCK);
         Account account = accounts.get(accountID);
         int balance = account.getAmount();
-        lockManager.unLock(TID);
         System.out.println("[DataManager].read()  TID " + TID + " readied account " + account.getId());
         return balance;
     }
@@ -57,10 +54,9 @@ public class DataManager implements LockType {
      *
      */
     public int write(int accountID,int TID, int amount){
-        lockManager.setLock(accounts.get(accountID),TID,WRITE_LOCK);
+        TransServer.lockManager.setLock(accounts.get(accountID),TID,WRITE_LOCK);
         Account account = accounts.get(accountID);
         account.setAmount(amount);
-        lockManager.unLock(TID);
         System.out.println("[DataManager].write()  TID " + TID + " wrote $" + amount + " to " + account.getId());
         return account.getAmount();
     }

@@ -55,11 +55,9 @@ public class Lock implements LockType {
             currentLockType = lockType;
             System.out.println("[Lock].acquire() holder.isEmpty()");
 
-        } else if (!holders.isEmpty()) {
+        } else if (!holders.contains(TID)) {
             // if another transaction holds the lock, share it.
-            if (!holders.contains(TID)){
-                holders.add(TID);
-            }
+            holders.add(TID);
             currentLockType = lockType;
             System.out.println("[Lock].acquire() !holder.isEmpty()");
 

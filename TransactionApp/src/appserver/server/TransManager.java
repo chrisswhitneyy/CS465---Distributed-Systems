@@ -97,6 +97,7 @@ public class TransManager {
                         case CLOSE_TRANS:
                             transactions.remove(this);
                             transCounter--;
+                            TransServer.lockManager.unLock(TID);
                             System.out.println("[TransManager][Trans].run() CLOSE_TRANS "+ TID +".");
                             return;
                         case READ_REQUEST:
