@@ -5,8 +5,6 @@ import appserver.comm.MessageTypes;
 import appserver.comm.Params;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-
 /**
  *
  * Class [TransServerProxy] : An instance of this class is created within the client to communicate with the transaction
@@ -144,6 +142,12 @@ public class TransServerProxy implements MessageTypes{
 
     }
 
+    /**
+     * getAllAcountTotal : gets the total of all the accounts
+     * @return the total
+     * @throws IOException - thrown when stream can't be opened
+     * @throws ClassNotFoundException - thrown when the type on the stream can't be read
+     */
     public int getAllAcountTotal() throws IOException, ClassNotFoundException{
         // initialize variables
         int balance;

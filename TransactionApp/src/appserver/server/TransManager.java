@@ -86,7 +86,7 @@ public class TransManager {
                     int amount;
                     int balance;
 
-                    // processing message
+                    // processing message, translate low-level network calls to high-level data operations
                     switch (message.getType()) {
 
                         case OPEN_TRANS:

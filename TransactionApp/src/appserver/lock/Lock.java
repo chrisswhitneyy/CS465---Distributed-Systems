@@ -128,6 +128,8 @@ public class Lock implements LockType {
     public ArrayList<Integer> getTIDsHolders(){
         return holders;
     }
-
+    /**
+     * getWaitingTIDs - returns the list of TIDs waiting for a lock
+     */
     public ArrayList<Integer> getWaitingTIDs(){ return waitingTIDs;}
 }

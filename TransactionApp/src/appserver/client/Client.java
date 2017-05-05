@@ -12,11 +12,11 @@ import utils.PropertyHandler;
  *
  */
 public class Client extends Thread{
-
+    /* class level variables needed for the clients properties and server connection info */
     private Properties properties;
     private String host;
     private int port;
-    private  int numberOfAccounts;
+    private int numberOfAccounts;
 
     /**
      * ClassConstructor
@@ -37,7 +37,11 @@ public class Client extends Thread{
         }
     }
 
-
+    /**
+     * run() : starts client thread, creates an instances of the proxy server, opens a transaction, and withdraws a
+     * random number from a random account and deposits it into another random account then closes the transaction.
+     * It also requests the branch total.
+     */
     @Override
     public void run() {
         try {
