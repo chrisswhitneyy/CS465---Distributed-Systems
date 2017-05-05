@@ -84,4 +84,8 @@ public class LockManager implements LockType {
         System.out.println("[LockManager].unlock TID " + TID + " unlocked.");
     }
 
+    public HashMap<Account, Lock> getLocks(){
+        return this.locks;
+    }
+
 }

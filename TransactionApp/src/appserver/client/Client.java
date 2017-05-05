@@ -56,7 +56,7 @@ public class Client extends Thread{
             int depositedAccount = (int) Math.floor( Math.random() * numberOfAccounts);
 
             // randomly select amount to transfer
-            int transferAmount = (int) Math.floor( Math.random() * 10 );
+            int transferAmount = (int) Math.ceil( Math.random()  );
 
             // reads from account which is be withdrawn from
             int amountFrom = transServerProxy.read(withdrawnAccount);

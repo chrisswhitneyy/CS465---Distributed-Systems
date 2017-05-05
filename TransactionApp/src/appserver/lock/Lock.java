@@ -19,6 +19,7 @@ public class Lock implements LockType {
     private Object object; // the object being protected by the lock
     private ArrayList<Integer> holders; // the TIDs of current holders
     private int currentLockType; // the current type
+    private ArrayList<Integer> waitingTIDs;
 
     /**
      * ClassConstructor
@@ -27,7 +28,8 @@ public class Lock implements LockType {
      */
     public Lock(Object object){
         this.object = object;
-        holders = new ArrayList<Integer>();
+        this.holders = new ArrayList<Integer>();
+        this.waitingTIDs = new ArrayList<Integer>();
     }
 
     /**
@@ -36,11 +38,14 @@ public class Lock implements LockType {
      * @param lockType - lock type
      *
      */
-
     public synchronized void acquire(int TID, int lockType){
 
         while(isConflict(TID,lockType)){
-            try { wait(); }
+            try {
+                waitingTIDs.add(TID);
+                wait();
+                waitingTIDs.remove(waitingTIDs.indexOf(TID));
+            }
             catch ( InterruptedException e){/*...*/}
         }
 
@@ -48,6 +53,7 @@ public class Lock implements LockType {
             // no TIDs hold lock
             holders.add(TID);
             currentLockType = lockType;
+            System.out.println("[Lock].acquire() holder.isEmpty()");
 
         } else if (!holders.isEmpty()) {
             // if another transaction holds the lock, share it.
@@ -55,13 +61,15 @@ public class Lock implements LockType {
                 holders.add(TID);
             }
             currentLockType = lockType;
+            System.out.println("[Lock].acquire() !holder.isEmpty()");
 
         } else if ( !holders.contains(TID) && currentLockType == READ_LOCK && lockType == WRITE_LOCK ){
             // this transaction is a holder but needs a more exclusive lock
             currentLockType = lockType;
+            System.out.println("[Lock].acquire()  more exclusive lock.");
         }
 
-        System.out.println("[Lock].acquire() TID:" + TID + " LockType" + lockType + ".");
+        System.out.println("[Lock].acquire() TID:" + TID + " acquired LockType" + lockType + ".");
 
     }
 
@@ -109,7 +117,6 @@ public class Lock implements LockType {
         }
         // everything is a conflict
         else {
-            // TODO
             System.out.println("[Lock].isConflict() Locks conflict.");
             return true;
         }
@@ -121,4 +128,6 @@ public class Lock implements LockType {
     public ArrayList<Integer> getTIDsHolders(){
         return holders;
     }
+
+    public ArrayList<Integer> getWaitingTIDs(){ return waitingTIDs;}
 }

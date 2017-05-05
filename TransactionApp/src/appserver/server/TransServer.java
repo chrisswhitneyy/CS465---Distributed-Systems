@@ -1,11 +1,16 @@
 package appserver.server;
 
+import appserver.data.Account;
 import appserver.data.DataManager;
+import appserver.lock.Lock;
 import appserver.lock.LockManager;
 import utils.PropertyHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 
@@ -92,5 +97,32 @@ public class TransServer extends Thread{
             transServer = new TransServer("../../../config/Server.properties");
         }
         transServer.start();
+
+        new Thread() {
+            public void run(){
+                try{
+                    Thread.sleep(10000);
+                }  catch (InterruptedException e){
+                    System.out.println("[TransServer][SupperThread].run()  Error : " + e);
+                }
+                Lock tempLock;
+                ArrayList<Integer> waitingTIDs;
+                HashMap<Account, Lock> locks  = lockManager.getLocks();
+                // iterates through all the locks and release the locks that contain TID
+                Iterator iterator = locks.entrySet().iterator();
+                System.out.println("============ DEAD LOCK ============");
+                while (iterator.hasNext()){
+                    tempLock = (Lock) ((HashMap.Entry) iterator.next()).getValue(); // get locks from hash map
+                    waitingTIDs = tempLock.getWaitingTIDs(); // get TIDs held by the lock
+                    for (int i=0; i< waitingTIDs.size(); i++){
+                        System.out.print("TID: " + waitingTIDs.get(i));
+                    }
+                    System.out.print("\n");
+                    iterator.remove(); // remove entry from iterator
+                }
+            }
+
+
+        }.start();
     }
 }
