@@ -1,5 +1,5 @@
 # CS465 Transactional Application
-A simple transactional system which tracks accounts and uses locks to insure concurrence.
+A simple transactional system which tracks accounts and uses locks to insure concurrency.
 
  * /appserver : contains the source for the application
      * /client : the client class which contains main and the proxy server which translates the high-level operations in client to low-level
